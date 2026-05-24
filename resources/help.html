@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>猫娘调教指南</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- COMMON_CSS -->
+    <style>
+        .cmd-row {
+            display: flex; align-items: center; padding: 5px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.04);
+        }
+        .cmd-row:last-child { border-bottom: none; }
+        .cmd-name {
+            font-weight: 600; font-size: 16px; color: #000;
+            min-width: 80px; text-align: right; padding-right: 12px;
+        }
+        .cmd-desc { font-size: 15px; color: #444; flex: 1; }
+        .cmd-tag {
+            font-size: 13px; padding: 2px 8px; border-radius: 10px; font-weight: 500; margin-left: 8px;
+            white-space: nowrap;
+        }
+        .tag-pet { background: #e8f5e9; color: #2e7d32; }
+        .tag-train { background: #fce4ec; color: #c62828; }
+        .tag-sys { background: #e3f2fd; color: #1565c0; }
+        .section-pet .cmd-name { color: #2e7d32; }
+        .section-train .cmd-name { color: #c62828; }
+        .section-sys .cmd-name { color: #1565c0; }
+        .tip-box {
+            border-radius: 8px; padding: 10px 14px;
+            font-size: 15px; color: #555; line-height: 1.6;
+        }
+        .tip-box strong { color: #6a1b9a; }
+        .flow-card {
+            display: flex; flex-direction: column;
+        }
+        .flow-card .card-inner {
+            display: flex; justify-content: center;
+        }
+        .flow-cycle {
+            position: relative;
+            width: 295px;
+            height: 295px;
+            margin: 10px auto;
+        }
+        .flow-ring-big {
+            width: 100%;
+            height: 100%;
+            border: 4px dashed #f57f17;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .flow-center-label {
+            font-size: 18px;
+            font-weight: 700;
+            color: #f57f17;
+            text-align: center;
+            line-height: 1.5;
+        }
+        .flow-node-item {
+            position: absolute;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .flow-node-item.pet { background: #e8f5e9; color: #2e7d32; top: 0; left: 50%; transform: translateX(-50%); }
+        .flow-node-item.result1 { background: #f3e5f5; color: #6a1b9a; top: 50%; right: 0; transform: translateY(-50%); }
+        .flow-node-item.train { background: #fce4ec; color: #c62828; bottom: 0; left: 50%; transform: translateX(-50%); }
+        .flow-node-item.result2 { background: #f3e5f5; color: #6a1b9a; top: 50%; left: 0; transform: translateY(-50%); }
+        .flow-curve-arrow {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+        }
+        .flow-curve-arrow::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+        }
+        .arrow-down-right { top: 20px; right: 40px; border-right: 2px solid #ccc; border-bottom: 2px solid #ccc; border-radius: 0 0 10px 0; }
+        .arrow-down-left { bottom: 20px; right: 40px; border-right: 2px solid #ccc; border-bottom: 2px solid #ccc; border-radius: 0 0 10px 0; transform: rotate(90deg); }
+        .arrow-up-left { bottom: 20px; left: 40px; border-left: 2px solid #ccc; border-bottom: 2px solid #ccc; border-radius: 0 0 0 10px; }
+        .arrow-up-right { top: 20px; left: 40px; border-left: 2px solid #ccc; border-top: 2px solid #ccc; border-radius: 10px 0 0 0; }
+        .flow-arrow-text {
+            position: absolute;
+            font-size: 16px;
+            color: #999;
+            font-weight: bold;
+        }
+        .arrow-text-1 { top: 35px; right: 60px; content: '↘'; }
+        .arrow-text-2 { bottom: 55px; right: 35px; content: '↙'; }
+        .arrow-text-3 { bottom: 35px; left: 60px; content: '↖'; }
+        .arrow-text-4 { top: 55px; left: 35px; content: '↗'; }
+    </style>
+</head>
+<body>
+    <div class="bg-image" id="bgImage"></div>
+    <div id="container">
+
+        <div style="text-align: center;">
+            <div class="header-card-wrap">
+                <div class="header-card-inner">
+                    <div class="header-card">
+                        <div class="cat-icon">🐱</div>
+                        <div class="title">猫娘调教</div>
+                        <div class="subtitle">&面板 &商店 &帮助丨#猫娘面板 #猫娘商店 #猫娘帮助</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row-wrap">
+        <div class="card">
+            <div class="card-title" style="color: #2e7d32;">🤗 宠爱类</div>
+            <div class="card-inner">
+                <div class="section-pet">
+                    <div class="cmd-row"><span class="cmd-name">&摸摸</span><span class="cmd-desc">+敏感/饱食，-疼痛</span></div>
+                    <div class="cmd-row"><span class="cmd-name">&投喂</span><span class="cmd-desc">+饱食/体力，-疼痛</span></div>
+                    <div class="cmd-row"><span class="cmd-name">&抱抱</span><span class="cmd-desc">+敏感/清洁，-疼痛</span></div>
+                    <div class="cmd-row"><span class="cmd-name">&安慰</span><span class="cmd-desc">+饱食/体力，-疼痛</span></div>
+                    <div class="cmd-row"><span class="cmd-name">&洗澡</span><span class="cmd-desc">+清洁/体力，-疼痛</span></div>
+                    <div class="cmd-row"><span class="cmd-name">&陪玩</span><span class="cmd-desc">+敏感/清洁，-疼痛</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title" style="color: #1565c0;">⚙ 基础指令</div>
+            <div class="card-inner">
+                <div class="section-sys">
+                    <div class="cmd-row"><span class="cmd-name">&面板</span><span class="cmd-desc">查看详细状态面板</span></div>
+                    <div class="cmd-row"><span class="cmd-name">&成就</span><span class="cmd-desc">查看成就进度和奖励</span></div>
+                    <div class="cmd-row"><span class="cmd-name">&商店</span><span class="cmd-desc">查看可购买的商品</span></div>
+                    <div class="cmd-row"><span class="cmd-name">&重置</span><span class="cmd-desc">重置所有数据（仅管理员）</span></div>
+                    <div class="cmd-row"><span class="cmd-name">&同意</span><span class="cmd-desc">参与猫娘更换投票</span></div>
+                    <div class="cmd-row"><span class="cmd-name">&变@群友</span><span class="cmd-desc">发起投票更换猫娘</span></div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="row-wrap">
+        <div class="card">
+            <div class="card-title" style="color: #c62828;">😈 调教类</div>
+            <div class="card-inner">
+                <div class="section-train">
+                    <div class="cmd-row"><span class="cmd-name">&鞭打</span><span class="cmd-desc">+疼痛/堕落/服从，掉耐久</span></div>
+                    <div class="cmd-row"><span class="cmd-name">&打脸</span><span class="cmd-desc">+疼痛/堕落/服从，掉耐久</span></div>
+                    <div class="cmd-row"><span class="cmd-name">&滴蜡</span><span class="cmd-desc">+疼痛/敏感/涩气，掉耐久</span></div>
+                    <div class="cmd-row"><span class="cmd-name">&挠痒</span><span class="cmd-desc">+敏感/涩气/服从</span></div>
+                    <div class="cmd-row"><span class="cmd-name">&羞辱</span><span class="cmd-desc">+敏感/堕落/服从</span></div>
+                    <div class="cmd-row"><span class="cmd-name">&振动</span><span class="cmd-desc">+疼痛/敏感/涩气，掉耐久</span></div>
+                    <div class="cmd-row"><span class="cmd-name">&猫叫</span><span class="cmd-desc">+敏感/涩气/堕落</span></div>
+                    <div class="cmd-row"><span class="cmd-name">&禁闭</span><span class="cmd-desc">+敏感/堕落/服从</span></div>
+                    <div class="cmd-row"><span class="cmd-name">&打屁股</span><span class="cmd-desc">+疼痛/涩气/堕落，掉耐久</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="card flow-card">
+            <div class="card-title" style="color: #f57f17;">📖 核心循环</div>
+            <div class="card-inner">
+                <div class="flow-cycle">
+                    <div class="flow-ring-big">
+                        <div class="flow-center-label">宠爱⇄调教<br>循坏</div>
+                    </div>
+                    <div class="flow-node-item pet">宠爱恢复状态</div>
+                    <div class="flow-node-item result1">疼痛降低</div>
+                    <div class="flow-node-item train">调教补疼痛</div>
+                    <div class="flow-node-item result2">状态消耗</div>
+                    <div class="flow-arrow-text arrow-text-1">↘</div>
+                    <div class="flow-arrow-text arrow-text-2">↙</div>
+                    <div class="flow-arrow-text arrow-text-3">↖</div>
+                    <div class="flow-arrow-text arrow-text-4">↗</div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title" style="color: #6a1b9a;">💡 攻略提示</div>
+            <div class="card-inner">
+                <div class="tip-box">
+                    <strong>暴击：</strong>RNG检定≥阈值触发暴击，数值翻倍<br>
+                    <strong>普通装：</strong>穿着普通装时无法购买调教装，需通过调教打掉耐久(20~50/次，10%直接掉光)<br>
+                    <strong>调教币：</strong>调教指令获取，商店购买消耗，初始100<br>
+                    <strong>换猫娘：</strong>&变@群友 发起投票，3人&同意即替换，&不同意管理员/当事人一票否决，3分钟超时<br>
+                    <strong>耐久掉落：</strong>仅鞭打/打脸/打屁股/振动/滴蜡会随机打掉1件普通装<br>
+                    <strong>状态加成：</strong>5项百分比状态>0才有加成，饱食权重2(0.20)，其余权重1(0.10)，上限1.60<br>
+                    <strong>疼痛M属性：</strong>疼痛越高收益越大(80-100最佳)，宠爱减疼痛，调教加疼痛，形成循环
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-box">
+            <div class="footer-inner">
+                Created By {{yunzaiName}} {{yunzaiVer}} &amp; smer-plugin v{{pluginVer}}
+            </div>
+        </div>
+
+    </div>
+
+    <!-- BG_LOADER -->
+</body>
+</html>

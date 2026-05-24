@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>成就系统</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- COMMON_CSS -->
+    <style>
+        .ach-row {
+            display: flex; align-items: center; padding: 5px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.04);
+        }
+        .ach-row:last-child { border-bottom: none; }
+
+        .ach-name {
+            font-weight: 600; font-size: 16px; color: #000;
+            min-width: 90px; text-align: right; padding-right: 12px;
+        }
+        .ach-desc { font-size: 15px; color: #444; flex: 1; }
+        .ach-reward {
+            font-size: 13px; padding: 2px 8px; border-radius: 10px; font-weight: 500; margin-left: 8px;
+            white-space: nowrap; background: #fff3e0; color: #e65100;
+        }
+        .ach-status {
+            font-size: 13px; padding: 2px 6px; border-radius: 10px; font-weight: 600; margin-left: 6px;
+            white-space: nowrap;
+        }
+        .ach-status.done { background: #e8f5e9; color: #2e7d32; }
+        .ach-status.pending { background: #f5f5f5; color: #9e9e9e; }
+        .section-train .ach-name { color: #c62828; }
+        .section-obey .ach-name { color: #1565c0; }
+        .section-lewd .ach-name { color: #ad1457; }
+        .section-depravity .ach-name { color: #6a1b9a; }
+        .section-survive .ach-name { color: #2e7d32; }
+        .section-special .ach-name { color: #f57f17; }
+        .section-shop .ach-name { color: #00838f; }
+        .section-charm .ach-name { color: #e91e63; }
+    </style>
+</head>
+<body>
+    <div class="bg-image" id="bgImage"></div>
+    <div id="container">
+
+        <div style="text-align: center;">
+            <div class="header-card-wrap">
+                <div class="header-card-inner">
+                    <div class="header-card">
+                        <div class="cat-icon">🏆</div>
+                        <div class="title">成就 ({{unlockedCount}}/{{achievementCount}})</div>
+                        <div class="subtitle">&面板 &商店 &帮助丨#猫娘面板 #猫娘商店 #猫娘帮助</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row-wrap">
+        <div class="card">
+            <div class="card-title" style="color: #e91e63;">💖 魅力</div>
+            <div class="card-inner">
+                <div class="section-charm">
+                    {{each achievements a}}{{if a.key === 'charm_520' || a.key === 'charm_1314' || a.key === 'charm_3640'}}
+                    <div class="ach-row{{if !a.unlocked}} locked{{/if}}"><span class="ach-name">{{a.name}}</span><span class="ach-desc">{{a.desc}}</span><span class="ach-reward">{{a.reward}}币</span><span class="ach-status {{if a.unlocked}}done{{else}}pending{{/if}}">{{if a.unlocked}}✓{{else}}✗{{/if}}</span></div>
+                    {{/if}}{{/each}}
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title" style="color: #c62828;">🔥 调教</div>
+            <div class="card-inner">
+                <div class="section-train">
+                    {{each achievements a}}{{if a.key === 'first_blood' || a.key === 'train_500' || a.key === 'healer'}}
+                    <div class="ach-row{{if !a.unlocked}} locked{{/if}}"><span class="ach-name">{{a.name}}</span><span class="ach-desc">{{a.desc}}</span><span class="ach-reward">{{a.reward}}币</span><span class="ach-status {{if a.unlocked}}done{{else}}pending{{/if}}">{{if a.unlocked}}✓{{else}}✗{{/if}}</span></div>
+                    {{/if}}{{/each}}
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="row-wrap">
+        <div class="card">
+            <div class="card-title" style="color: #1565c0;">💙 服从</div>
+            <div class="card-inner">
+                <div class="section-obey">
+                    {{each achievements a}}{{if a.key.startsWith('obedience_')}}
+                    <div class="ach-row{{if !a.unlocked}} locked{{/if}}"><span class="ach-name">{{a.name}}</span><span class="ach-desc">{{a.desc}}</span><span class="ach-reward">{{a.reward}}币</span><span class="ach-status {{if a.unlocked}}done{{else}}pending{{/if}}">{{if a.unlocked}}✓{{else}}✗{{/if}}</span></div>
+                    {{/if}}{{/each}}
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title" style="color: #ad1457;">💜 涩气</div>
+            <div class="card-inner">
+                <div class="section-lewd">
+                    {{each achievements a}}{{if a.key.startsWith('lewd_')}}
+                    <div class="ach-row{{if !a.unlocked}} locked{{/if}}"><span class="ach-name">{{a.name}}</span><span class="ach-desc">{{a.desc}}</span><span class="ach-reward">{{a.reward}}币</span><span class="ach-status {{if a.unlocked}}done{{else}}pending{{/if}}">{{if a.unlocked}}✓{{else}}✗{{/if}}</span></div>
+                    {{/if}}{{/each}}
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="row-wrap">
+        <div class="card">
+            <div class="card-title" style="color: #6a1b9a;">💜 堕落</div>
+            <div class="card-inner">
+                <div class="section-depravity">
+                    {{each achievements a}}{{if a.key.startsWith('depravity_')}}
+                    <div class="ach-row{{if !a.unlocked}} locked{{/if}}"><span class="ach-name">{{a.name}}</span><span class="ach-desc">{{a.desc}}</span><span class="ach-reward">{{a.reward}}币</span><span class="ach-status {{if a.unlocked}}done{{else}}pending{{/if}}">{{if a.unlocked}}✓{{else}}✗{{/if}}</span></div>
+                    {{/if}}{{/each}}
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title" style="color: #2e7d32;">🌱 陪伴</div>
+            <div class="card-inner">
+                <div class="section-survive">
+                    {{each achievements a}}{{if a.key.startsWith('survivor_')}}
+                    <div class="ach-row{{if !a.unlocked}} locked{{/if}}"><span class="ach-name">{{a.name}}</span><span class="ach-desc">{{a.desc}}</span><span class="ach-reward">{{a.reward}}币</span><span class="ach-status {{if a.unlocked}}done{{else}}pending{{/if}}">{{if a.unlocked}}✓{{else}}✗{{/if}}</span></div>
+                    {{/if}}{{/each}}
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="row-wrap">
+        <div class="card">
+            <div class="card-title" style="color: #f57f17;">⭐ 特殊</div>
+            <div class="card-inner">
+                <div class="section-special">
+                    {{each achievements a}}{{if a.key === 'pain_m_awaken' || a.key === 'pain_collapse' || a.key === 'sensitivity_stone' || a.key === 'sensitivity_fly' || a.key === 'energy_dying' || a.key === 'energy_revive' || a.key === 'satiety_starving' || a.key === 'satiety_starve_to_death' || a.key === 'satiety_overfeed' || a.key === 'hygiene_cinderella' || a.key === 'hygiene_lotus'}}
+                    <div class="ach-row{{if !a.unlocked}} locked{{/if}}"><span class="ach-name">{{a.name}}</span><span class="ach-desc">{{a.desc}}</span><span class="ach-reward">{{a.reward}}币</span><span class="ach-status {{if a.unlocked}}done{{else}}pending{{/if}}">{{if a.unlocked}}✓{{else}}✗{{/if}}</span></div>
+                    {{/if}}{{/each}}
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-title" style="color: #00838f;">🛍️ 商店</div>
+            <div class="card-inner">
+                <div class="section-shop">
+                    {{each achievements a}}{{if a.key.startsWith('breaker_') || a.key.startsWith('shop_')}}
+                    <div class="ach-row{{if !a.unlocked}} locked{{/if}}"><span class="ach-name">{{a.name}}</span><span class="ach-desc">{{a.desc}}</span><span class="ach-reward">{{a.reward}}币</span><span class="ach-status {{if a.unlocked}}done{{else}}pending{{/if}}">{{if a.unlocked}}✓{{else}}✗{{/if}}</span></div>
+                    {{/if}}{{/each}}
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="footer-box">
+            <div class="footer-inner">
+                Created By {{yunzaiName}} {{yunzaiVer}} &amp; smer-plugin v{{pluginVer}}
+            </div>
+        </div>
+
+    </div>
+
+    <!-- BG_LOADER -->
+</body>
+</html>
