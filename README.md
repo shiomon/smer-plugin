@@ -102,9 +102,9 @@ git clone --depth=1 https://ghfast.top/https://github.com/shiomon/smer-plugin.gi
 
 **稀有装（y1-y14）**
 
-**传说装（y15-y21）**
+**传说装（y15-y28）**
 
-**神话装（y22-y35）**
+**神话装（y29-y35）**
 
 **道具（d1-d7）**
 
