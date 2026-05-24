@@ -1,6 +1,19 @@
-# smer-plugin v3.1.3
+# smer-plugin v3.2.0
 
 猫娘调教插件 —— 基于 Yunzai 框架的猫娘养成调教系统
+
+## 安装
+
+1. 崽根目录拉取：
+```
+git clone --depth=1 https://github.com/shiomon/smer-plugin.git ./plugins/smer-plugin/
+```
+国内环境：
+```
+git clone --depth=1 https://ghfast.top/https://github.com/shiomon/smer-plugin.git ./plugins/smer-plugin/
+```
+
+2. 将 smer-plugin 文件夹放入 `Miao-Yunzai/plugins/` 或 `Yunzai/plugins/` 目录下，重启即可。
 
 ## 功能概览
 
@@ -25,7 +38,7 @@
 
 | 分类 | 指令 |
 |------|------|
-| 调教 | `&鞭打` `&打脸` `&打屁股` `&挤痒` `&羞辱` `&振动` `&猫叫` `&禁闭` `&滴蜡` |
+| 调教 | `&鞭打` `&打脸` `&打屁股` `&挠痒` `&羞辱` `&振动` `&猫叫` `&禁闭` `&滴蜡` |
 | 宠爱 | `&摸摸` `&投喂` `&抱抱` `&安慰` `&洗澡` `&陪玩` |
 
 ### 投票指令
