@@ -158,11 +158,8 @@ class EventSystem {
     }
 
     const hasMythic = Object.values(data.clothes).some(item => item.rarity === 'mythic')
-    const hasLegendary = Object.values(data.clothes).some(item => item.rarity === 'legendary')
     if (hasMythic) {
       newTraits.push({ name: '神话装', css: 'trait-good' })
-    } else if (hasLegendary) {
-      newTraits.push({ name: '传说装', css: 'trait-good' })
     }
 
     data.traits = newTraits

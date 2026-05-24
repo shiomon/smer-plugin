@@ -305,8 +305,7 @@ const EQUIPMENT_RARITY = { // 装备稀有度定义: name=显示名 color=标签
   common: { name: '普通', color: '#aaaaaa', charm: 0, multiplier: 1.0 },
   rare: { name: '稀有', color: '#44aaff', charmRange: [60, 120], effectCount: 1, multiplier: 1.3 },
   epic: { name: '传说', color: '#ff9933', charmRange: [120, 250], effectCount: 2, multiplier: 1.6 },
-  legendary: { name: '传说', color: '#ff9933', charmRange: [250, 520], effectCount: 3, multiplier: 2.0 },
-  mythic: { name: '神话', color: '#e91e63', charmRange: [520, 800], effectCount: 4, multiplier: 2.5 }
+  mythic: { name: '神话', color: '#e91e63', charmRange: [250, 520], effectCount: 3, multiplier: 2.0 }
 }
 
 const EFFECT_POOL = [ // 效果随机池: stat=属性 range=[最小,最大]
@@ -341,7 +340,7 @@ const CLOTHING_DB = { // 服装数据库: 每个槽位的所有装备, index决�
     { name: '兔耳兜帽', rarity: 'rare' },
     { name: '猫耳贝雷帽', rarity: 'rare' },
     { name: '拘束头套', rarity: 'epic' },
-    { name: '盲拘头套', rarity: 'legendary' },
+    { name: '盲拘头套', rarity: 'mythic' },
     { name: '毛绒猫耳', rarity: 'mythic' }
   ],
   upper: [
@@ -352,7 +351,7 @@ const CLOTHING_DB = { // 服装数据库: 每个槽位的所有装备, index决�
     { name: '女仆装', rarity: 'rare' },
     { name: '丝绸礼服', rarity: 'rare' },
     { name: '胶衣套装', rarity: 'epic' },
-    { name: '束缚皮带', rarity: 'legendary' },
+    { name: '束缚皮带', rarity: 'mythic' },
     { name: '半透猫娘衣', rarity: 'mythic' }
   ],
   lower: [
@@ -363,7 +362,7 @@ const CLOTHING_DB = { // 服装数据库: 每个槽位的所有装备, index决�
     { name: '女仆短裙', rarity: 'rare' },
     { name: '皮质热裤', rarity: 'rare' },
     { name: '死库水', rarity: 'epic' },
-    { name: '拘束裤', rarity: 'legendary' },
+    { name: '拘束裤', rarity: 'mythic' },
     { name: '猫尾超短裙', rarity: 'mythic' }
   ],
   bra: [
@@ -374,7 +373,7 @@ const CLOTHING_DB = { // 服装数据库: 每个槽位的所有装备, index决�
     { name: '拘束胸罩', rarity: 'rare' },
     { name: '蕾丝半罩', rarity: 'rare' },
     { name: '振动乳贴', rarity: 'epic' },
-    { name: '极拘束胸罩', rarity: 'legendary' },
+    { name: '极拘束胸罩', rarity: 'mythic' },
     { name: '乳首铃铛夹', rarity: 'mythic' }
   ],
   panty: [
@@ -385,7 +384,7 @@ const CLOTHING_DB = { // 服装数据库: 每个槽位的所有装备, index决�
     { name: 'C字裤', rarity: 'rare' },
     { name: '蕾丝丁字裤', rarity: 'rare' },
     { name: '开裆内裤', rarity: 'epic' },
-    { name: '拘束内裤', rarity: 'legendary' },
+    { name: '拘束内裤', rarity: 'mythic' },
     { name: '猫型开档', rarity: 'mythic' }
   ],
   accessory: [
@@ -396,7 +395,7 @@ const CLOTHING_DB = { // 服装数据库: 每个槽位的所有装备, index决�
     { name: '猫耳头饰', rarity: 'rare' },
     { name: '口球', rarity: 'rare' },
     { name: '真皮项圈', rarity: 'epic' },
-    { name: '拘束项圈', rarity: 'legendary' },
+    { name: '拘束项圈', rarity: 'mythic' },
     { name: '猫铃项圈', rarity: 'mythic' }
   ],
   shoes: [
@@ -407,7 +406,7 @@ const CLOTHING_DB = { // 服装数据库: 每个槽位的所有装备, index决�
     { name: '高跟鞋', rarity: 'rare' },
     { name: '猫爪短靴', rarity: 'rare' },
     { name: '拘束靴', rarity: 'epic' },
-    { name: '过膝拘束靴', rarity: 'legendary' },
+    { name: '过膝拘束靴', rarity: 'mythic' },
     { name: '猫爪长筒靴', rarity: 'mythic' }
   ]
 }

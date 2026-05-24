@@ -92,8 +92,7 @@ git clone --depth=1 https://ghfast.top/https://github.com/shiomon/smer-plugin.gi
 | 普通 | 灰 | 0 | 0 | ×1.0 |
 | 稀有 | 蓝 | 60-120 | 1 | ×1.3 |
 | 传说 | 橙 | 120-250 | 2 | ×1.6 |
-| 传说 | 橙 | 250-520 | 3 | ×2.0 |
-| 神话 | 粉 | 520-800 | 4 | ×2.5 |
+| 神话 | 粉 | 250-520 | 3 | ×2.0 |
 
 ### 装备槽位
 
@@ -103,9 +102,9 @@ git clone --depth=1 https://ghfast.top/https://github.com/shiomon/smer-plugin.gi
 
 **稀有装（y1-y14）**
 
-**传说装（y15-y28）**
+**传说装（y15-y21）**
 
-**神话装（y29-y35）**
+**神话装（y22-y35）**
 
 **道具（d1-d7）**
 

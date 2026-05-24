@@ -263,7 +263,7 @@ class DataManager {
   stripTrainingClothes(data) {
     for (const slot of CLOTHING_SLOTS) {
       const r = data.clothes[slot]?.rarity
-      if (r === 'rare' || r === 'epic' || r === 'legendary' || r === 'mythic') {
+      if (r === 'rare' || r === 'epic' || r === 'mythic') {
         data.clothes[slot] = makeEmptySlot()
       }
     }
