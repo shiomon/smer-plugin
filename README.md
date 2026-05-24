@@ -130,10 +130,6 @@ git clone --depth=1 https://ghfast.top/https://github.com/shiomon/smer-plugin.gi
 - **投票换人**：3人同意即替换猫娘，管理员/当事人可一票否决，3分钟超时
 - **互动冷却**：全局60秒冷却，防止刷屏
 
-## 安装
-
-将 `smer-plugin` 文件夹放入 `Miao-Yunzai/plugins/`  `Yunzai/plugins/`目录下，重启即可。
-
 ## 致谢
 
 本项目参考了 [yenai-plugin] 部分代码。
