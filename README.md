@@ -1,6 +1,7 @@
 # smer-plugin v3.2.0
 
 猫娘调教插件 —— 基于 Yunzai 框架的猫娘养成调教系统
+
 默认猫娘为群主，也可以投票指定
 
 <img width="673" height="1211" alt="11" src="https://github.com/user-attachments/assets/16fe1c00-d3eb-4930-9fee-b09f06b93dd5" />
