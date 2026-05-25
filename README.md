@@ -138,6 +138,8 @@ git clone --depth=1 https://ghfast.top/https://github.com/shiomon/smer-plugin.gi
 
 本项目参考了 [yenai-plugin] 部分代码。
 
+由华为智能体生成
+
 感谢以下项目：
 
 - [Miao-Yunzai]
