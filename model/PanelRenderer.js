@@ -111,7 +111,7 @@ class PanelRenderer {
     const totalContribution = allUsersEntries.reduce((sum, u) => sum + (u[1].contribution || 0), 0)
     const topUsers = allUsersEntries
       .sort((a, b) => (b[1].contribution || 0) - (a[1].contribution || 0))
-      .slice(0, 5)
+      .slice(0, 30)
       .map(u => {
         const c = u[1].contribution || 0
         const pct = totalContribution > 0 ? Math.round(c / totalContribution * 100) : 0
