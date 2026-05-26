@@ -340,7 +340,7 @@ class InteractionEngine {
 
   formatInteractionReply(result) {
     const cleanText = result.replyText.replace(/<[^>]+>/g, '').replace(/\n/g, ' ')
-    return `RNG检定[${result.roll}]:\n${cleanText}\n(已记录，发&面板 查看)`
+    return `RNG检定[${result.roll}]:\n${cleanText}`
   }
 }
 
