@@ -46,8 +46,8 @@ class InteractionEngine {
 
     const meta = ACTION_META[action]
     const logColor = isCritSuccess ? meta.critColor : meta.normalColor
-    const logText = this.getLogText(userName, isCritSuccess, false, '猫娘', action, userId)
-    const replyText = this.getLogText(userName, isCritSuccess, false, ownerName, action, userId)
+    let logText = this.getLogText(userName, isCritSuccess, false, '猫娘', action, userId)
+    let replyText = this.getLogText(userName, isCritSuccess, false, ownerName, action, userId)
 
     if (DUR_LOSS_ACTIONS.has(action)) {
       const broken = this.damageRandomCommonClothing(data)
