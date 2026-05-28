@@ -188,6 +188,7 @@ class ShopSystem {
     const lastUserName = Object.values(data.users).sort((a, b) => ((b.contribution || 0)) - ((a.contribution || 0)))[0]?.name || ''
 
     data.achievements.totalCharm = this.dm.getTotalCharm(data)
+    data.achievements.survivalDays = Math.max(data.achievements.survivalDays || 0, calculateDays(data.sys.startTimestamp))
     this.dm.updateStatHistory(data)
 
     for (const [key, achievement] of Object.entries(CONFIG.ACHIEVEMENTS)) {
