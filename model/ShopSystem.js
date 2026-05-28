@@ -1,4 +1,5 @@
 import { CONFIG, CLOTHING_DB, SHOP_ITEMS, EQUIPMENT_RARITY, CLOTHING_SLOTS, generateRandomEffect } from '../config/cfg.js'
+import { calculateDays } from './utils.js'
 
 const SLOT_NAMES = {
   head: '头饰', upper: '上装', lower: '下装', bra: '胸罩', panty: '内裤', accessory: '饰品', shoes: '鞋子'
@@ -255,7 +256,7 @@ class ShopSystem {
           case 'survivor_99':
           case 'survivor_520':
           case 'survivor_1314':
-            unlocked = (data.achievements.survivalDays || 0) >= ach.target
+            unlocked = Math.max(data.achievements.survivalDays || 0, calculateDays(data.sys.startTimestamp)) >= ach.target
             break
           case 'breaker_5':
           case 'breaker_10':
