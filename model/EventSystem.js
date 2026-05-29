@@ -31,6 +31,12 @@ class EventSystem {
     if (data.sys.lastCheckDate !== today) {
       data.sys.lastCheckDate = today
       data.achievements.survivalDays = (data.achievements.survivalDays || 0) + 1
+      const allNaked = CLOTHING_SLOTS.every(slot => !data.clothes[slot] || data.clothes[slot].rarity === 'none')
+      if (allNaked) {
+        data.achievements.nakedDays = (data.achievements.nakedDays || 0) + 1
+      } else {
+        data.achievements.nakedDays = 0
+      }
       data.sys.location = LOCATIONS[Math.floor(Math.random() * LOCATIONS.length)].name
       data.stats.energy = this.dm.clampStat('energy', data.stats.energy + CONFIG.DAILY_ENERGY_RECOVERY)
       data.stats.satiety = this.dm.clampStat('satiety', data.stats.satiety - CONFIG.DAILY_SATIETY_LOSS)
