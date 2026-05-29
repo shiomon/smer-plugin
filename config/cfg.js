@@ -240,7 +240,7 @@ const CONFIG = {
     'shop_5_panty': { name: '迷迭香', desc: '拥有5件内裤', type: 'clothes_count', slot: 'panty', target: 5, reward: 80 },
     'shop_full_mythic': { name: '神装', desc: '拥有全套神话装', type: 'full_mythic', reward: 300 },
     'shop_5_shoes': { name: '足控', desc: '拥有5件鞋子', type: 'clothes_count', slot: 'shoes', target: 5, reward: 80 },
-    'shop_destroy_master': { name: '善解人衣', desc: '触发2次10%暴击掉光耐久', type: 'destroy_master', target: 2, reward: 100 },
+    'shop_destroy_master': { name: '善解人衣', desc: '触发2次10%掉光耐久', type: 'destroy_master', target: 2, reward: 100 },
     'shop_naked_3d': { name: '衣服是什么', desc: '未穿连续3天', type: 'naked_days', target: 3, reward: 60 },
     'shop_naked_7d': { name: '裸体猫娘', desc: '未穿连续7天', type: 'naked_days', target: 7, reward: 100 },
     'charm_520': { name: '小妖精', desc: '总魅力达到520', target: 520, reward: 80 },
