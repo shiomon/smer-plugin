@@ -73,196 +73,68 @@ class InteractionEngine {
     }
   }
 
-  applyAction(data, action, config, isCrit, bonus, modifier) {
-    const handler = this.actionHandlers[action]
-    if (handler) {
-      handler.call(this, data, config, isCrit, bonus, modifier)
-    }
-    if (modifier) this.es.applyModifier(data.stats, modifier)
+
+  ACTION_SPECS = {
+    '鞭打':   { trainStats: ['depravity', 'obedience'], painGain: true, achType: 'totalTrain', achValue: (c, isCrit) => isCrit ? c.critPainGain : c.painGain },
+    '打脸':   { trainStats: ['depravity', 'obedience'], painGain: true, achType: 'totalTrain', achValue: (c, isCrit) => isCrit ? c.critPainGain : c.painGain },
+    '打屁股': { trainStats: ['lewd', 'depravity'], painGain: true, achType: 'totalTrain', achValue: (c, isCrit) => isCrit ? c.critPainGain : c.painGain },
+    '摸摸':   { directGains: ['sensitivity', 'satiety'], painLoss: true, achType: 'totalHeal', achValue: 10 },
+    '挠痒':   { trainStats: ['obedience', 'lewd'], trainAlways: ['obedience'], directGains: ['sensitivity'], achType: 'totalTrain', achValue: 5 },
+    '投喂':   { directGains: ['satiety', 'energy'], painLoss: true, achType: 'totalHeal', achValue: 15 },
+    '抱抱':   { directGains: ['hygiene', 'sensitivity'], painLoss: true, achType: 'totalHeal', achValue: 10 },
+    '羞辱':   { trainStats: ['depravity', 'obedience'], directGains: ['sensitivity'], achType: 'totalTrain', achValue: 10 },
+    '安慰':   { directGains: ['satiety', 'energy'], painLoss: true, achType: 'totalHeal', achValue: 15 },
+    '洗澡':   { directGains: ['hygiene', 'energy'], painLoss: true, achType: 'totalHeal', achValue: 10 },
+    '陪玩':   { directGains: ['sensitivity', 'hygiene'], painLoss: true, achType: 'totalHeal', achValue: 10 },
+    '振动':   { trainStats: ['lewd'], directGains: ['sensitivity'], painGain: true, achType: 'totalTrain', achValue: 10 },
+    '猫叫':   { trainStats: ['lewd', 'depravity'], directGains: ['sensitivity'], achType: 'totalTrain', achValue: 8 },
+    '禁闭':   { trainStats: ['obedience', 'depravity'], directGains: ['sensitivity'], preLoss: ['satiety', 'energy'], achType: 'totalTrain', achValue: 15 },
+    '滴蜡':   { trainStats: ['lewd'], directGains: ['sensitivity'], painGain: true, achType: 'totalTrain', achValue: 10 }
   }
 
-  actionHandlers = {
-    '鞭打': function(data, config, isCrit, bonus, modifier) {
-      if (isCrit) {
-        data.stats.pain += config.critPainGain
-        this.applyTrainStat(data, 'depravity', config.critDepravityGain || config.depravityGain, bonus)
-        this.applyTrainStat(data, 'obedience', config.critObedienceGain || config.obedienceGain, bonus)
-      } else {
-        data.stats.pain += config.painGain
-        this.applyTrainStat(data, 'depravity', config.depravityGain, bonus)
-        this.applyTrainStat(data, 'obedience', config.obedienceGain, bonus)
+  applyAction(data, action, config, isCrit, bonus, modifier) {
+    const spec = this.ACTION_SPECS[action]
+    if (!spec) return
+
+    if (spec.preLoss) {
+      for (const stat of spec.preLoss) {
+        data.stats[stat] -= config[stat + 'Loss']
       }
-      data.achievements.totalTrain = (data.achievements.totalTrain || 0) + (isCrit ? config.critPainGain : config.painGain)
-    },
-    '打脸': function(data, config, isCrit, bonus, modifier) {
-      if (isCrit) {
-        data.stats.pain += config.critPainGain
-        this.applyTrainStat(data, 'depravity', config.critDepravityGain || config.depravityGain, bonus)
-        this.applyTrainStat(data, 'obedience', config.critObedienceGain || config.obedienceGain, bonus)
-      } else {
-        data.stats.pain += config.painGain
-        this.applyTrainStat(data, 'depravity', config.depravityGain, bonus)
-        this.applyTrainStat(data, 'obedience', config.obedienceGain, bonus)
-      }
-      data.achievements.totalTrain = (data.achievements.totalTrain || 0) + (isCrit ? config.critPainGain : config.painGain)
-    },
-    '打屁股': function(data, config, isCrit, bonus, modifier) {
-      if (isCrit) {
-        data.stats.pain += config.critPainGain
-        this.applyTrainStat(data, 'lewd', config.critLewdGain || config.lewdGain, bonus)
-        this.applyTrainStat(data, 'depravity', config.critDepravityGain || config.depravityGain, bonus)
-      } else {
-        data.stats.pain += config.painGain
-        this.applyTrainStat(data, 'lewd', config.lewdGain, bonus)
-        this.applyTrainStat(data, 'depravity', config.depravityGain, bonus)
-      }
-      data.achievements.totalTrain = (data.achievements.totalTrain || 0) + (isCrit ? config.critPainGain : config.painGain)
-    },
-    '摸摸': function(data, config, isCrit, bonus) {
-      if (isCrit) {
-        data.stats.sensitivity += config.critSensitivityGain || config.sensitivityGain
-        data.stats.satiety += config.critSatietyGain || config.satietyGain
-        data.stats.pain -= config.critPainLoss || config.painLoss
-      } else {
-        data.stats.sensitivity += config.sensitivityGain
-        data.stats.satiety += config.satietyGain
-        data.stats.pain -= config.painLoss
-      }
-      data.achievements.totalHeal = (data.achievements.totalHeal || 0) + 10
-    },
-    '挠痒': function(data, config, isCrit, bonus) {
-      this.applyTrainStat(data, 'obedience', config.obedienceGain, bonus)
-      if (isCrit) {
-        data.stats.sensitivity += config.critSensitivityGain || config.sensitivityGain
-        this.applyTrainStat(data, 'lewd', config.critLewdGain || config.lewdGain, bonus)
-      } else {
-        data.stats.sensitivity += config.sensitivityGain
-        this.applyTrainStat(data, 'lewd', config.lewdGain, bonus)
-      }
-      data.achievements.totalTrain = (data.achievements.totalTrain || 0) + 5
-    },
-    '投喂': function(data, config, isCrit, bonus) {
-      if (isCrit) {
-        data.stats.satiety += config.critSatietyGain || config.satietyGain
-        data.stats.energy += config.critEnergyGain || config.energyGain
-        data.stats.pain -= config.critPainLoss || config.painLoss
-      } else {
-        data.stats.satiety += config.satietyGain
-        data.stats.energy += config.energyGain
-        data.stats.pain -= config.painLoss
-      }
-      data.achievements.totalHeal = (data.achievements.totalHeal || 0) + 15
-    },
-    '抱抱': function(data, config, isCrit, bonus) {
-      if (isCrit) {
-        data.stats.hygiene += config.critHygieneGain || config.hygieneGain
-        data.stats.sensitivity += config.critSensitivityGain || config.sensitivityGain
-        data.stats.pain -= config.critPainLoss || config.painLoss
-      } else {
-        data.stats.hygiene += config.hygieneGain
-        data.stats.sensitivity += config.sensitivityGain
-        data.stats.pain -= config.painLoss
-      }
-      data.achievements.totalHeal = (data.achievements.totalHeal || 0) + 10
-    },
-    '羞辱': function(data, config, isCrit, bonus) {
-      if (isCrit) {
-        this.applyTrainStat(data, 'depravity', config.critDepravityGain || config.depravityGain, bonus)
-        this.applyTrainStat(data, 'obedience', config.critObedienceGain || config.obedienceGain, bonus)
-        data.stats.sensitivity += config.critSensitivityGain || config.sensitivityGain
-      } else {
-        this.applyTrainStat(data, 'depravity', config.depravityGain, bonus)
-        this.applyTrainStat(data, 'obedience', config.obedienceGain, bonus)
-        data.stats.sensitivity += config.sensitivityGain
-      }
-      data.achievements.totalTrain = (data.achievements.totalTrain || 0) + 10
-    },
-    '安慰': function(data, config, isCrit, bonus) {
-      if (isCrit) {
-        data.stats.satiety += (config.critSatietyGain || config.satietyGain)
-        data.stats.energy += (config.critEnergyGain || config.energyGain)
-        data.stats.pain -= (config.critPainLoss || config.painLoss)
-      } else {
-        data.stats.satiety += config.satietyGain
-        data.stats.energy += config.energyGain
-        data.stats.pain -= config.painLoss
-      }
-      data.achievements.totalHeal = (data.achievements.totalHeal || 0) + 15
-    },
-    '洗澡': function(data, config, isCrit, bonus) {
-      if (isCrit) {
-        data.stats.hygiene += config.critHygieneGain || config.hygieneGain
-        data.stats.energy += config.critEnergyGain || config.energyGain
-        data.stats.pain -= config.critPainLoss || config.painLoss
-      } else {
-        data.stats.hygiene += config.hygieneGain
-        data.stats.energy += config.energyGain
-        data.stats.pain -= config.painLoss
-      }
-      data.achievements.totalHeal = (data.achievements.totalHeal || 0) + 10
-    },
-    '陪玩': function(data, config, isCrit, bonus) {
-      if (isCrit) {
-        data.stats.sensitivity += config.critSensitivityGain || config.sensitivityGain
-        data.stats.hygiene += config.critHygieneGain || config.hygieneGain
-        data.stats.pain -= config.critPainLoss || config.painLoss
-      } else {
-        data.stats.sensitivity += config.sensitivityGain
-        data.stats.hygiene += config.hygieneGain
-        data.stats.pain -= config.painLoss
-      }
-      data.achievements.totalHeal = (data.achievements.totalHeal || 0) + 10
-    },
-    '振动': function(data, config, isCrit, bonus) {
-      if (isCrit) {
-        data.stats.pain += config.critPainGain || config.painGain
-        data.stats.sensitivity += config.critSensitivityGain || config.sensitivityGain
-        this.applyTrainStat(data, 'lewd', config.critLewdGain || config.lewdGain, bonus)
-      } else {
-        data.stats.pain += config.painGain
-        data.stats.sensitivity += config.sensitivityGain
-        this.applyTrainStat(data, 'lewd', config.lewdGain, bonus)
-      }
-      data.achievements.totalTrain = (data.achievements.totalTrain || 0) + 10
-    },
-    '猫叫': function(data, config, isCrit, bonus) {
-      if (isCrit) {
-        this.applyTrainStat(data, 'lewd', config.critLewdGain || config.lewdGain, bonus)
-        this.applyTrainStat(data, 'depravity', config.critDepravityGain || config.depravityGain, bonus)
-        data.stats.sensitivity += config.critSensitivityGain || config.sensitivityGain
-      } else {
-        this.applyTrainStat(data, 'lewd', config.lewdGain, bonus)
-        this.applyTrainStat(data, 'depravity', config.depravityGain, bonus)
-        data.stats.sensitivity += config.sensitivityGain
-      }
-      data.achievements.totalTrain = (data.achievements.totalTrain || 0) + 8
-    },
-    '禁闭': function(data, config, isCrit, bonus) {
-      data.stats.satiety -= config.satietyLoss
-      data.stats.energy -= config.energyLoss
-      if (isCrit) {
-        this.applyTrainStat(data, 'obedience', config.critObedienceGain || config.obedienceGain, bonus)
-        this.applyTrainStat(data, 'depravity', config.critDepravityGain || config.depravityGain, bonus)
-        data.stats.sensitivity += config.critSensitivityGain || config.sensitivityGain
-      } else {
-        this.applyTrainStat(data, 'obedience', config.obedienceGain, bonus)
-        this.applyTrainStat(data, 'depravity', config.depravityGain, bonus)
-        data.stats.sensitivity += config.sensitivityGain
-      }
-      data.achievements.totalTrain = (data.achievements.totalTrain || 0) + 15
-    },
-    '滴蜡': function(data, config, isCrit, bonus) {
-      if (isCrit) {
-        data.stats.pain += config.critPainGain || config.painGain
-        this.applyTrainStat(data, 'lewd', config.critLewdGain || config.lewdGain, bonus)
-        data.stats.sensitivity += config.critSensitivityGain || config.sensitivityGain
-      } else {
-        data.stats.pain += config.painGain
-        this.applyTrainStat(data, 'lewd', config.lewdGain, bonus)
-        data.stats.sensitivity += config.sensitivityGain
-      }
-      data.achievements.totalTrain = (data.achievements.totalTrain || 0) + 10
     }
+
+    if (spec.painGain) {
+      data.stats.pain += isCrit ? (config.critPainGain || config.painGain) : config.painGain
+    }
+
+    if (spec.painLoss) {
+      data.stats.pain -= isCrit ? (config.critPainLoss || config.painLoss) : config.painLoss
+    }
+
+    if (spec.trainStats) {
+      for (const stat of spec.trainStats) {
+        const isAlways = spec.trainAlways && spec.trainAlways.includes(stat)
+        if (isAlways) {
+          this.applyTrainStat(data, stat, config[stat + 'Gain'], bonus)
+        } else {
+          const critKey = 'crit' + stat.charAt(0).toUpperCase() + stat.slice(1) + 'Gain'
+          const value = isCrit ? (config[critKey] || config[stat + 'Gain']) : config[stat + 'Gain']
+          this.applyTrainStat(data, stat, value, bonus)
+        }
+      }
+    }
+
+    if (spec.directGains) {
+      for (const stat of spec.directGains) {
+        const critKey = 'crit' + stat.charAt(0).toUpperCase() + stat.slice(1) + 'Gain'
+        const value = isCrit ? (config[critKey] || config[stat + 'Gain']) : config[stat + 'Gain']
+        data.stats[stat] += value
+      }
+    }
+
+    const achValue = typeof spec.achValue === 'function' ? spec.achValue(config, isCrit) : spec.achValue
+    data.achievements[spec.achType] = (data.achievements[spec.achType] || 0) + achValue
+
+    if (modifier) this.es.applyModifier(data.stats, modifier)
   }
 
   damageRandomCommonClothing(data) {
