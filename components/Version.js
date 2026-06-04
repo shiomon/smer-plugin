@@ -4,7 +4,7 @@ import cfg from '../../../lib/config/config.js'
 const Plugin_Path = `${process.cwd()}/plugins/smer-plugin`
 const package_path = `${Plugin_Path}/package.json`
 
-let currentVersion = '3.2.0'
+let currentVersion = '3.3.1'
 
 try {
   if (fs.existsSync(package_path)) {
