@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>预览：名称卡片移至圆环中间</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Noto Sans SC', 'Noto Color Emoji', 'SF Pro', 'Inter', sans-serif;
+            color: #1a1a2e; letter-spacing: -0.01em;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+        }
+        .bg-image {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            z-index: -1; background-size: cover; background-position: top center;
+            background-image: url('https://api.dujin.org/bing/1920.php');
+            opacity: 0.3;
+        }
+        #container { width: 850px; padding: 24px 28px; margin: 0 auto; }
+        .card {
+            background: transparent; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.3); border-radius: 16px; padding: 0 20px 16px 20px; margin-bottom: 16px;
+            box-shadow: 0 0 20px 8px rgba(0,0,0,0.35), 0 0 40px rgba(0,0,0,0.2);
+        }
+        .card-inner {
+            background: rgba(255,255,255,0.92); border-radius: 12px;
+            padding: 12px 16px;
+            box-shadow: 0 0 12px 4px rgba(0,0,0,0.15), 0 0 20px rgba(0,0,0,0.1);
+        }
+        .card-title {
+            display: flex; align-items: center; justify-content: space-between;
+            font-size: 18px; font-weight: 600; line-height: 1;
+            padding: 16px 0 8px 0;
+            margin: 0 0 10px 0;
+            border-bottom: 1px solid rgba(69,39,160,0.15);
+            position: relative;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        .card-title-left { color: #4527a0; }
+        .stat-row { margin-bottom: 12px; font-size: 17px; }
+        .stat-label { display: flex; justify-content: space-between; margin-bottom: 4px; font-weight: 500; font-size: 17px; }
+        :root {
+            --bg: rgba(255, 255, 255);
+            --back-bg: #c5ccda;
+            --w: 110px;
+            --back-shadow: #fff;
+            --gap: 8px;
+            --inner: calc(var(--w) - var(--gap));
+            --text-color: #514f4f;
+            --stroke: 12px;
+            --circle: calc(var(--inner) - var(--stroke));
+            --center: calc(var(--circle) - var(--stroke));
+        }
+        .c-sat-ring { stroke: #43a047; } .c-sat-bad-ring { stroke: #e53935; }
+        .c-eng-ring { stroke: #f9a825; } .c-eng-bad-ring { stroke: #e53935; }
+        .c-pain-ring { stroke: #ec4899; } .c-pain-bad-ring { stroke: #e53935; }
+        .c-sens-ring { stroke: #7b1fa2; } .c-sens-bad-ring { stroke: #e53935; }
+        .c-hyg-ring { stroke: #0288d1; } .c-hyg-bad-ring { stroke: #e53935; }
+        .circle-row .li { display: flex; flex-direction: column; align-items: center; }
+        .circle-row .container-box {
+            width: var(--w); height: var(--w);
+            position: relative;
+        }
+        .circle-row .container-box::before {
+            content: ''; position: absolute;
+            left: 50%; top: 50%;
+            transform: translate(-50%, -50%);
+            width: calc(var(--w) + 10px); height: calc(var(--w) + 10px);
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            z-index: 0;
+        }
+        .circle-row .container-box::after {
+            content: attr(data-num);
+            position: absolute;
+            font-size: 20px; font-weight: 700;
+            left: 50%; top: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--text-color);
+            font-family: 'Noto Sans SC', sans-serif;
+            z-index: 2;
+        }
+        .circle-row .circle-outer {
+            position: relative;
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            background: var(--bg);
+        }
+        .circle-row .circle-outer::before {
+            width: var(--inner); height: var(--inner);
+            box-shadow: inset 8px 8px 10px var(--back-bg),
+                        inset -4px -4px 8px var(--back-shadow);
+        }
+        .circle-row .circle-outer::after {
+            width: var(--center); height: var(--center);
+            box-shadow: 6px 6px 8px var(--back-bg),
+                        -2px -2px 8px var(--back-shadow);
+        }
+        .circle-row .circle-outer::before,
+        .circle-row .circle-outer::after {
+            content: ''; position: absolute;
+            left: 50%; top: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: var(--bg);
+        }
+        .circle-row svg {
+            width: 100%; height: 100%;
+            position: absolute; left: 0; top: 0;
+            z-index: 3;
+            transform: rotate(-90deg);
+        }
+        .circle-row svg circle {
+            fill: none;
+            stroke-linecap: round;
+            position: absolute;
+        }
+        .circle-bg { stroke: #e0e0e0; stroke-width: var(--stroke); stroke-linecap: butt; }
+        .circle-optimal { stroke: #9e9e9e; stroke-width: var(--stroke); stroke-linecap: butt; opacity: 0.6; }
+        .circle-fill { stroke-width: var(--stroke); filter: drop-shadow(0 0 3px rgba(0,0,0,0.2)); }
+        .circle-row article {
+            width: 100px; text-align: center;
+            display: flex; flex-direction: column; align-items: center;
+            white-space: nowrap;
+        }
+        .circle-row article summary {
+            font-size: 22px; margin-top: 5px; font-weight: 700;
+            list-style: none; cursor: default;
+        }
+        .c-lewd { background: linear-gradient(90deg, #e91e63, #f48fb1); } .t-lewd { color: #c2185b; }
+        .c-dep { background: linear-gradient(90deg, #7c4dff, #b388ff); } .t-dep { color: #6200ea; }
+        .c-obey { background: linear-gradient(90deg, #ff6d00, #ffab40); } .t-obey { color: #e65100; }
+        .bar-bg { width: 100%; height: 12px; background: rgba(0,0,0,0.06); border-radius: 6px; overflow: hidden; }
+        .bar-fill { height: 100%; border-radius: 6px; transition: width 0.3s ease; }
+        .trait-badge { padding: 3px 8px; font-size: 13px; border-radius: 6px; background: rgba(0,0,0,0.04); font-weight: 500; }
+        .trait-bad { background: rgba(229,57,53,0.1); color: #c62828; }
+        .trait-lewd { background: rgba(156,39,176,0.1); color: #7b1fa2; }
+        .sub-text { color: #5d5d5d; }
+        .dim-text { color: #757575; }
+
+        /* ===== 新布局：名称卡片嵌入圆环行 ===== */
+        .new-layout-header {
+            display: flex;
+            align-items: stretch;
+            gap: 0;
+            margin-bottom: 16px;
+        }
+        .avatar-col {
+            display: flex; flex-direction: column; align-items: center;
+            flex: 1;
+            margin: 0 8px 0 0;
+            padding-top: 16px;
+        }
+        .name-card-embedded {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 556px;
+        }
+        .circle-row-with-card {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 12px;
+            margin: 16px 0 6px 0;
+            flex-wrap: nowrap;
+        }
+        .circle-group {
+            display: flex;
+            gap: 12px;
+        }
+        /* 名称卡片竖版 - 嵌入圆环中间 */
+        .name-card-vertical {
+            background: transparent;
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 16px;
+            padding: 0 16px 12px 16px;
+            box-shadow: 0 0 20px 8px rgba(0,0,0,0.35), 0 0 40px rgba(0,0,0,0.2);
+            width: 200px;
+            flex-shrink: 0;
+        }
+        .name-card-vertical .card-title {
+            font-size: 15px;
+            padding: 10px 0 6px 0;
+            margin: 0 0 6px 0;
+            flex-wrap: wrap;
+        }
+        .name-card-vertical .stat-row { margin-bottom: 8px; }
+        .name-card-vertical .stat-label { font-size: 13px; margin-bottom: 2px; }
+        .name-card-vertical .bar-bg { height: 10px; }
+
+        /* 对比区域 */
+        .compare-section {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px dashed rgba(255,255,255,0.3);
+        }
+        .compare-label {
+            text-align: center;
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-image"></div>
+    <div id="container">
+
+        <!-- ========== 新布局预览 ========== -->
+        <div style="text-align:center; margin-bottom:24px;">
+            <span style="background:rgba(233,30,99,0.2); color:#f48fb1; padding:6px 20px; border-radius:20px; font-size:14px; font-weight:600;">
+                新布局：名称卡片移至体力与疼痛圆环之间
+            </span>
+        </div>
+
+        <!-- 头像单独一行 -->
+        <div class="new-layout-header">
+            <div class="avatar-col">
+                <div style="position: relative; width: 130px;">
+                    <div style="position: relative; width: 130px; height: 122px; background: transparent; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 0 20px 8px rgba(0,0,0,0.35), 0 0 40px rgba(0,0,0,0.2); border-radius: 44% 44% 50% 50% / 30% 30% 56% 56%; overflow: visible;">
+                        <div style="position: absolute; top: -20px; left: 10px; width: 36px; height: 34px; background: transparent; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.3); border-radius: 50% 50% 36% 36% / 50% 50% 20% 20%; transform: rotate(-22deg); box-shadow: 0 0 20px 8px rgba(0,0,0,0.35), 0 0 40px rgba(0,0,0,0.2);">
+                            <div style="position: absolute; top: 5px; left: 50%; transform: translateX(-50%); width: 20px; height: 18px; background: rgba(255,182,193,0.4); border-radius: 50% 50% 36% 36% / 50% 50% 20% 20%;"></div>
+                        </div>
+                        <div style="position: absolute; top: -20px; right: 10px; width: 36px; height: 34px; background: transparent; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.3); border-radius: 50% 50% 36% 36% / 50% 50% 20% 20%; transform: rotate(22deg); box-shadow: 0 0 20px 8px rgba(0,0,0,0.35), 0 0 40px rgba(0,0,0,0.2);">
+                            <div style="position: absolute; top: 5px; left: 50%; transform: translateX(-50%); width: 20px; height: 18px; background: rgba(255,182,193,0.4); border-radius: 50% 50% 36% 36% / 50% 50% 20% 20%;"></div>
+                        </div>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 110px; height: 110px; border-radius: 50%; background: linear-gradient(135deg, #fce4ec, #f3e5f5); display: flex; align-items: center; justify-content: center; font-size: 44px; box-shadow: 0 0 15px 5px rgba(0,0,0,0.2);">🐱</div>
+                    </div>
+                </div>
+                <div class="card-inner" style="text-align: center; font-size: 11px; line-height: 1.4; padding: 6px 8px; margin-top: auto;">
+                    <div class="sub-text" style="font-size: 11px; margin-bottom: 4px;">正在适应中...</div>
+                    <div style="line-height: 1.8;">
+                        <span class="trait-badge trait-lewd" style="font-size: 10px;">M体质</span>
+                        <span class="trait-badge trait-bad" style="font-size: 10px;">极度敏感</span>
+                    </div>
+                </div>
+            </div>
+            <!-- 右侧留空，名称卡片已移走 -->
+            <div style="flex: 3;"></div>
+        </div>
+
+        <!-- 状态卡片 + 圆环行（名称卡片嵌入中间） -->
+        <div class="card">
+            <div class="card-title"><span class="card-title-left" style="color: #2e7d32;">📍 状态</span></div>
+            <div class="card-inner">
+                <div style="margin-bottom: 6px; padding-left: 4px;">
+                    <div style="display: flex; gap: 16px; margin-bottom: 2px;">
+                        <span style="font-size: 14px; font-weight: 600;">地点：温暖的浴场</span>
+                        <span style="font-size: 14px; color: #42a5f5;">效果：调教+10%</span>
+                    </div>
+                    <div style="font-size: 14px; line-height: 1.5;">
+                        <strong style="color: #66bb6a;">加成:</strong> 状态优(1.2) × 装备(1.1) = x1.32/1.60<br>
+                        <strong style="color: #66bb6a;">攻略:</strong> 首先提升状态, 状态好有加成, 着装效果也会提升加成, 调教会大增
+                    </div>
+                </div>
+
+                <!-- ★ 圆环行：饱食 | 体力 | [名称卡片] | 疼痛 | 敏感 | 清洁 ★ -->
+                <div class="circle-row-with-card">
+                    <!-- 饱食 -->
+                    <div class="li">
+                        <div class="container-box" data-num="80%">
+                            <div class="circle-outer">
+                                <svg viewBox="0 0 102 102">
+                                    <circle class="circle-bg" cx="51" cy="51" r="45"/>
+                                    <circle class="circle-optimal" cx="51" cy="51" r="45" stroke-dasharray="0 169.6 56.5 56.6" stroke-dashoffset="0"/>
+                                    <circle class="circle-fill c-sat-ring" cx="51" cy="51" r="45" stroke-dasharray="226.2 282.7"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <article><summary style="color:#43a047;">饱食</summary></article>
+                    </div>
+                    <!-- 体力 -->
+                    <div class="li">
+                        <div class="container-box" data-num="65%">
+                            <div class="circle-outer">
+                                <svg viewBox="0 0 102 102">
+                                    <circle class="circle-bg" cx="51" cy="51" r="45"/>
+                                    <circle class="circle-optimal" cx="51" cy="51" r="45" stroke-dasharray="0 226.2 56.5" stroke-dashoffset="0"/>
+                                    <circle class="circle-fill c-eng-bad-ring" cx="51" cy="51" r="45" stroke-dasharray="183.8 282.7"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <article><summary style="color:#e53935;">体力</summary></article>
+                    </div>
+
+                    <!-- ★★★ 名称卡片（嵌入圆环中间）★★★ -->
+                    <div class="name-card-vertical">
+                        <div class="card-title">
+                            <span class="card-title-left" style="color: #ad1457; font-size:15px;">🐾 猫娘</span>
+                            <span style="font-size: 10px; color: #000; font-weight: 600;">&商店 &帮助 &成就</span>
+                        </div>
+                        <div class="card-inner" style="padding: 8px 12px;">
+                            <div class="stat-row" style="margin-bottom: 6px;">
+                                <div class="stat-label t-lewd" style="font-size: 13px;"><span>涩气</span><span>520/1314</span></div>
+                                <div class="bar-bg" style="height: 10px;"><div class="bar-fill c-lewd" style="width: 39.6%;"></div></div>
+                            </div>
+                            <div class="stat-row" style="margin-bottom: 6px;">
+                                <div class="stat-label t-dep" style="font-size: 13px;"><span>堕落</span><span>180/1314</span></div>
+                                <div class="bar-bg" style="height: 10px;"><div class="bar-fill c-dep" style="width: 13.7%;"></div></div>
+                            </div>
+                            <div class="stat-row" style="margin-bottom: 0;">
+                                <div class="stat-label t-obey" style="font-size: 13px;"><span>服从</span><span>90/1314</span></div>
+                                <div class="bar-bg" style="height: 10px;"><div class="bar-fill c-obey" style="width: 6.8%;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 疼痛 -->
+                    <div class="li">
+                        <div class="container-box" data-num="30%">
+                            <div class="circle-outer">
+                                <svg viewBox="0 0 102 102">
+                                    <circle class="circle-bg" cx="51" cy="51" r="45"/>
+                                    <circle class="circle-optimal" cx="51" cy="51" r="45" stroke-dasharray="0 226.2 56.5" stroke-dashoffset="0"/>
+                                    <circle class="circle-fill c-pain-bad-ring" cx="51" cy="51" r="45" stroke-dasharray="84.8 282.7"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <article><summary style="color:#e53935;">疼痛</summary></article>
+                    </div>
+                    <!-- 敏感 -->
+                    <div class="li">
+                        <div class="container-box" data-num="72%">
+                            <div class="circle-outer">
+                                <svg viewBox="0 0 102 102">
+                                    <circle class="circle-bg" cx="51" cy="51" r="45"/>
+                                    <circle class="circle-optimal" cx="51" cy="51" r="45" stroke-dasharray="0 226.2 56.5" stroke-dashoffset="0"/>
+                                    <circle class="circle-fill c-sens-ring" cx="51" cy="51" r="45" stroke-dasharray="203.5 282.7"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <article><summary style="color:#7b1fa2;">敏感</summary></article>
+                    </div>
+                    <!-- 清洁 -->
+                    <div class="li">
+                        <div class="container-box" data-num="55%">
+                            <div class="circle-outer">
+                                <svg viewBox="0 0 102 102">
+                                    <circle class="circle-bg" cx="51" cy="51" r="45"/>
+                                    <circle class="circle-optimal" cx="51" cy="51" r="45" stroke-dasharray="0 226.2 56.5" stroke-dashoffset="0"/>
+                                    <circle class="circle-fill c-hyg-bad-ring" cx="51" cy="51" r="45" stroke-dasharray="155.5 282.7"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <article><summary style="color:#e53935;">清洁</summary></article>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== 对比：原布局 ========== -->
+        <div class="compare-section">
+            <div class="compare-label">▼ 原布局对比 ▼</div>
+
+            <div style="display: flex; align-items: stretch; gap: 0; margin-bottom: 16px;">
+                <div style="display: flex; flex-direction: column; align-items: center; flex: 1; margin: 0 8px 0 0; padding-top: 16px;">
+                    <div style="position: relative; width: 130px;">
+                        <div style="position: relative; width: 130px; height: 122px; background: transparent; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 0 20px 8px rgba(0,0,0,0.35), 0 0 40px rgba(0,0,0,0.2); border-radius: 44% 44% 50% 50% / 30% 30% 56% 56%; overflow: visible;">
+                            <div style="position: absolute; top: -20px; left: 10px; width: 36px; height: 34px; background: transparent; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.3); border-radius: 50% 50% 36% 36% / 50% 50% 20% 20%; transform: rotate(-22deg); box-shadow: 0 0 20px 8px rgba(0,0,0,0.35), 0 0 40px rgba(0,0,0,0.2);">
+                                <div style="position: absolute; top: 5px; left: 50%; transform: translateX(-50%); width: 20px; height: 18px; background: rgba(255,182,193,0.4); border-radius: 50% 50% 36% 36% / 50% 50% 20% 20%;"></div>
+                            </div>
+                            <div style="position: absolute; top: -20px; right: 10px; width: 36px; height: 34px; background: transparent; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.3); border-radius: 50% 50% 36% 36% / 50% 50% 20% 20%; transform: rotate(22deg); box-shadow: 0 0 20px 8px rgba(0,0,0,0.35), 0 0 40px rgba(0,0,0,0.2);">
+                                <div style="position: absolute; top: 5px; left: 50%; transform: translateX(-50%); width: 20px; height: 18px; background: rgba(255,182,193,0.4); border-radius: 50% 50% 36% 36% / 50% 50% 20% 20%;"></div>
+                            </div>
+                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 110px; height: 110px; border-radius: 50%; background: linear-gradient(135deg, #fce4ec, #f3e5f5); display: flex; align-items: center; justify-content: center; font-size: 44px; box-shadow: 0 0 15px 5px rgba(0,0,0,0.2);">🐱</div>
+                        </div>
+                    </div>
+                    <div class="card-inner" style="text-align: center; font-size: 11px; line-height: 1.4; padding: 6px 8px; margin-top: auto;">
+                        <div class="sub-text" style="font-size: 11px; margin-bottom: 4px;">正在适应中...</div>
+                        <div style="line-height: 1.8;">
+                            <span class="trait-badge trait-lewd" style="font-size: 10px;">M体质</span>
+                            <span class="trait-badge trait-bad" style="font-size: 10px;">极度敏感</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="padding: 0 20px 16px 20px; margin-bottom: 0; width: 556px;">
+                    <div class="card-title"><span class="card-title-left" style="color: #ad1457;">🐾 猫娘</span><span style="font-size: 12px; color: #000; font-weight: 600;">&商店 | &帮助 | &成就</span></div>
+                    <div class="card-inner" style="padding: 12px 20px 12px 20px;">
+                        <div class="stat-row" style="margin-bottom: 6px;">
+                            <div class="stat-label t-lewd" style="font-size: 15px;"><span>涩气</span><span>520/1314</span></div>
+                            <div class="bar-bg" style="height: 16px;"><div class="bar-fill c-lewd" style="width: 39.6%;"></div></div>
+                        </div>
+                        <div class="stat-row" style="margin-bottom: 6px;">
+                            <div class="stat-label t-dep" style="font-size: 15px;"><span>堕落</span><span>180/1314</span></div>
+                            <div class="bar-bg" style="height: 16px;"><div class="bar-fill c-dep" style="width: 13.7%;"></div></div>
+                        </div>
+                        <div class="stat-row" style="margin-bottom: 0;">
+                            <div class="stat-label t-obey" style="font-size: 15px;"><span>服从</span><span>90/1314</span></div>
+                            <div class="bar-bg" style="height: 16px;"><div class="bar-fill c-obey" style="width: 6.8%;"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title"><span class="card-title-left" style="color: #2e7d32;">📍 状态</span></div>
+                <div class="card-inner">
+                    <div style="margin-bottom: 6px; padding-left: 4px;">
+                        <div style="display: flex; gap: 16px; margin-bottom: 2px;">
+                            <span style="font-size: 14px; font-weight: 600;">地点：温暖的浴场</span>
+                            <span style="font-size: 14px; color: #42a5f5;">效果：调教+10%</span>
+                        </div>
+                    </div>
+                    <div class="circle-row-with-card" style="justify-content: space-around;">
+                        <div class="li">
+                            <div class="container-box" data-num="80%">
+                                <div class="circle-outer"><svg viewBox="0 0 102 102"><circle class="circle-bg" cx="51" cy="51" r="45"/><circle class="circle-optimal" cx="51" cy="51" r="45" stroke-dasharray="0 169.6 56.5 56.6" stroke-dashoffset="0"/><circle class="circle-fill c-sat-ring" cx="51" cy="51" r="45" stroke-dasharray="226.2 282.7"/></svg></div>
+                            </div>
+                            <article><summary style="color:#43a047;">饱食</summary></article>
+                        </div>
+                        <div class="li">
+                            <div class="container-box" data-num="65%">
+                                <div class="circle-outer"><svg viewBox="0 0 102 102"><circle class="circle-bg" cx="51" cy="51" r="45"/><circle class="circle-optimal" cx="51" cy="51" r="45" stroke-dasharray="0 226.2 56.5" stroke-dashoffset="0"/><circle class="circle-fill c-eng-bad-ring" cx="51" cy="51" r="45" stroke-dasharray="183.8 282.7"/></svg></div>
+                            </div>
+                            <article><summary style="color:#e53935;">体力</summary></article>
+                        </div>
+                        <div class="li">
+                            <div class="container-box" data-num="30%">
+                                <div class="circle-outer"><svg viewBox="0 0 102 102"><circle class="circle-bg" cx="51" cy="51" r="45"/><circle class="circle-optimal" cx="51" cy="51" r="45" stroke-dasharray="0 226.2 56.5" stroke-dashoffset="0"/><circle class="circle-fill c-pain-bad-ring" cx="51" cy="51" r="45" stroke-dasharray="84.8 282.7"/></svg></div>
+                            </div>
+                            <article><summary style="color:#e53935;">疼痛</summary></article>
+                        </div>
+                        <div class="li">
+                            <div class="container-box" data-num="72%">
+                                <div class="circle-outer"><svg viewBox="0 0 102 102"><circle class="circle-bg" cx="51" cy="51" r="45"/><circle class="circle-optimal" cx="51" cy="51" r="45" stroke-dasharray="0 226.2 56.5" stroke-dashoffset="0"/><circle class="circle-fill c-sens-ring" cx="51" cy="51" r="45" stroke-dasharray="203.5 282.7"/></svg></div>
+                            </div>
+                            <article><summary style="color:#7b1fa2;">敏感</summary></article>
+                        </div>
+                        <div class="li">
+                            <div class="container-box" data-num="55%">
+                                <div class="circle-outer"><svg viewBox="0 0 102 102"><circle class="circle-bg" cx="51" cy="51" r="45"/><circle class="circle-optimal" cx="51" cy="51" r="45" stroke-dasharray="0 226.2 56.5" stroke-dashoffset="0"/><circle class="circle-fill c-hyg-bad-ring" cx="51" cy="51" r="45" stroke-dasharray="155.5 282.7"/></svg></div>
+                            </div>
+                            <article><summary style="color:#e53935;">清洁</summary></article>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

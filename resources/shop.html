@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>猫娘商店指南</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- COMMON_CSS -->
+    <style>
+        .cmd-row {
+            display: flex; align-items: center; padding: 5px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+        .cmd-row:last-child { border-bottom: none; }
+        .cmd-idx {
+            font-weight: 700; font-size: 15px; color: #999;
+            min-width: 28px; padding-right: 10px;
+        }
+        .cmd-slot {
+            font-size: 14px; color: #888;
+            min-width: 40px; padding-right: 10px;
+        }
+        .cmd-name {
+            font-weight: 600; font-size: 16px; color: #000;
+            flex: 1; padding-right: 10px;
+        }
+        .cmd-cost {
+            font-size: 13px; padding: 2px 8px; border-radius: 10px; font-weight: 500;
+            white-space: nowrap; background: #fff3e0; color: #e65100;
+        }
+        .item-row {
+            display: flex; align-items: center; padding: 5px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+        .item-row:last-child { border-bottom: none; }
+        .item-idx {
+            font-weight: 700; font-size: 15px; color: #999;
+            min-width: 28px; padding-right: 10px;
+        }
+        .item-name {
+            font-weight: 600; font-size: 16px; color: #2e7d32;
+            min-width: 90px; padding-right: 10px;
+        }
+        .item-slot {
+            font-size: 14px; color: #888;
+            flex: 1; padding-right: 10px;
+        }
+        .item-cost {
+            font-size: 13px; padding: 2px 8px; border-radius: 10px; font-weight: 500;
+            white-space: nowrap; background: #fff3e0; color: #e65100;
+        }
+        .tip-box {
+            border-radius: 8px; padding: 10px 14px;
+            font-size: 15px; color: #555; line-height: 1.6;
+        }
+        .tip-box strong { color: #6a1b9a; }
+        .row-wrap .card { flex: 1; }
+        .section-rare .cmd-name { color: #1565c0; }
+        .section-epic .cmd-name { color: #e65100; }
+        .section-mythic .cmd-name { color: #e91e63; }
+        .section-consumable .cmd-name { color: #2e7d32; }
+    </style>
+</head>
+<body>
+    <div class="bg-image" id="bgImage"></div>
+    <div id="container">
+
+        <div style="text-align: center;">
+            <div class="header-card-wrap">
+                <div class="header-card-inner">
+                    <div class="header-card">
+                        <div class="cat-icon">🛍️</div>
+                        <div class="title">猫娘商店</div>
+                        <div class="subtitle">&面板 &商店 &帮助丨#猫娘面板 #猫娘商店 #猫娘帮助</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title" style="color: #444;">📖 购买说明</div>
+            <div class="card-inner">
+                <div class="tip-box">
+                    <strong>换装购买：</strong>&购买y1 ~ &购买y35（序号对应下方换装区列表）<br>
+                    <strong>道具购买：</strong>&购买d1 ~ &购买d7（序号对应下方道具区列表）<br>
+                    <strong>购买条件：</strong>换装需普通装耐久全部归零，调教装可直接替换<br>
+                    <strong>调教币：</strong>通过调教互动获取，初始100<br>
+                    <strong>脱光调教装条件：</strong>购买卸装水溶解
+                </div>
+            </div>
+        </div>
+
+        <div class="row-wrap">
+        <div class="card">
+            <div class="card-title" style="color: #1565c0;">💎 稀有</div>
+            <div class="card-inner">
+                <div class="section-rare">
+                    <div class="cmd-row"><span class="cmd-idx">1</span><span class="cmd-slot">头饰</span><span class="cmd-name">兔耳兜帽</span><span class="cmd-cost">60币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">2</span><span class="cmd-slot">头饰</span><span class="cmd-name">猫耳贝雷帽</span><span class="cmd-cost">60币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">3</span><span class="cmd-slot">上装</span><span class="cmd-name">女仆装</span><span class="cmd-cost">60币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">4</span><span class="cmd-slot">上装</span><span class="cmd-name">丝绸礼服</span><span class="cmd-cost">70币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">5</span><span class="cmd-slot">下装</span><span class="cmd-name">女仆短裙</span><span class="cmd-cost">55币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">6</span><span class="cmd-slot">下装</span><span class="cmd-name">皮质热裤</span><span class="cmd-cost">55币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">7</span><span class="cmd-slot">胸罩</span><span class="cmd-name">拘束胸罩</span><span class="cmd-cost">50币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">8</span><span class="cmd-slot">胸罩</span><span class="cmd-name">蕾丝半罩</span><span class="cmd-cost">50币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">9</span><span class="cmd-slot">内裤</span><span class="cmd-name">C字裤</span><span class="cmd-cost">45币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">10</span><span class="cmd-slot">内裤</span><span class="cmd-name">蕾丝丁字裤</span><span class="cmd-cost">45币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">11</span><span class="cmd-slot">饰品</span><span class="cmd-name">猫耳头饰</span><span class="cmd-cost">50币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">12</span><span class="cmd-slot">饰品</span><span class="cmd-name">口球</span><span class="cmd-cost">55币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">13</span><span class="cmd-slot">鞋子</span><span class="cmd-name">高跟鞋</span><span class="cmd-cost">55币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">14</span><span class="cmd-slot">鞋子</span><span class="cmd-name">猫爪短靴</span><span class="cmd-cost">55币</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title" style="color: #e65100;">🔶 传说</div>
+            <div class="card-inner">
+                <div class="section-epic">
+                    <div class="cmd-row"><span class="cmd-idx">15</span><span class="cmd-slot">头饰</span><span class="cmd-name">拘束头套</span><span class="cmd-cost">120币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">16</span><span class="cmd-slot">头饰</span><span class="cmd-name">盲拘头套</span><span class="cmd-cost">160币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">17</span><span class="cmd-slot">上装</span><span class="cmd-name">胶衣套装</span><span class="cmd-cost">200币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">18</span><span class="cmd-slot">上装</span><span class="cmd-name">束缚皮带</span><span class="cmd-cost">200币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">19</span><span class="cmd-slot">下装</span><span class="cmd-name">死库水</span><span class="cmd-cost">180币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">20</span><span class="cmd-slot">下装</span><span class="cmd-name">拘束裤</span><span class="cmd-cost">180币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">21</span><span class="cmd-slot">胸罩</span><span class="cmd-name">振动乳贴</span><span class="cmd-cost">170币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">22</span><span class="cmd-slot">胸罩</span><span class="cmd-name">极拘束胸罩</span><span class="cmd-cost">170币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">23</span><span class="cmd-slot">内裤</span><span class="cmd-name">开裆内裤</span><span class="cmd-cost">140币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">24</span><span class="cmd-slot">内裤</span><span class="cmd-name">拘束内裤</span><span class="cmd-cost">170币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">25</span><span class="cmd-slot">饰品</span><span class="cmd-name">真皮项圈</span><span class="cmd-cost">130币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">26</span><span class="cmd-slot">饰品</span><span class="cmd-name">拘束项圈</span><span class="cmd-cost">170币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">27</span><span class="cmd-slot">鞋子</span><span class="cmd-name">拘束靴</span><span class="cmd-cost">150币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">28</span><span class="cmd-slot">鞋子</span><span class="cmd-name">过膝拘束靴</span><span class="cmd-cost">180币</span></div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="row-wrap">
+        <div class="card">
+            <div class="card-title" style="color: #e91e63;">🐾 神话 · 猫娘专属</div>
+            <div class="card-inner">
+                <div class="section-mythic">
+                    <div class="cmd-row"><span class="cmd-idx">29</span><span class="cmd-slot">头饰</span><span class="cmd-name">毛绒猫耳</span><span class="cmd-cost">500币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">30</span><span class="cmd-slot">上装</span><span class="cmd-name">半透猫娘衣</span><span class="cmd-cost">600币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">31</span><span class="cmd-slot">下装</span><span class="cmd-name">猫尾超短裙</span><span class="cmd-cost">550币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">32</span><span class="cmd-slot">胸罩</span><span class="cmd-name">乳首铃铛夹</span><span class="cmd-cost">520币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">33</span><span class="cmd-slot">内裤</span><span class="cmd-name">猫型开档</span><span class="cmd-cost">580币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">34</span><span class="cmd-slot">饰品</span><span class="cmd-name">猫铃项圈</span><span class="cmd-cost">480币</span></div>
+                    <div class="cmd-row"><span class="cmd-idx">35</span><span class="cmd-slot">鞋子</span><span class="cmd-name">猫爪长筒靴</span><span class="cmd-cost">520币</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title" style="color: #2e7d32;">🧪 道具区</div>
+            <div class="card-inner">
+                <div class="section-consumable">
+                    <div class="item-row"><span class="item-idx">1</span><span class="item-name">快感增强液</span><span class="item-slot">敏感+50</span><span class="item-cost">30币</span></div>
+                    <div class="item-row"><span class="item-idx">2</span><span class="item-name">东方同人本</span><span class="item-slot">体力+20堕落+15</span><span class="item-cost">40币</span></div>
+                    <div class="item-row"><span class="item-idx">3</span><span class="item-name">高级恢复剂</span><span class="item-slot">体力+40饱食+30</span><span class="item-cost">80币</span></div>
+                    <div class="item-row"><span class="item-idx">4</span><span class="item-name">清洁喷雾</span><span class="item-slot">清洁+60</span><span class="item-cost">25币</span></div>
+                    <div class="item-row"><span class="item-idx">5</span><span class="item-name">体力药剂</span><span class="item-slot">体力+50饱食-10</span><span class="item-cost">45币</span></div>
+                    <div class="item-row"><span class="item-idx">6</span><span class="item-name">神秘药水</span><span class="item-slot">全恢复堕落+20涩气+10</span><span class="item-cost">150币</span></div>
+                    <div class="item-row"><span class="item-idx">7</span><span class="item-name">卸装水</span><span class="item-slot">溶解所有调教装备</span><span class="item-cost">520币</span></div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="footer-box">
+            <div class="footer-inner">
+                Created By {{yunzaiName}} {{yunzaiVer}} &amp; smer-plugin v{{pluginVer}}
+            </div>
+        </div>
+
+    </div>
+
+    <!-- BG_LOADER -->
+</body>
+</html>
