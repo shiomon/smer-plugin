@@ -21,6 +21,9 @@ class PanelApp extends plugin {
       await e.reply('数据加载失败，请先执行 #猫娘重置')
       return
     }
+    if (!data.sys.ownerId) {
+      await this.sys.dm.updateOwnerInfo(e, data)
+    }
     this.sys.dm.saveData(data, groupId)
     await this.sys.renderer.renderPanel(e, data)
   }

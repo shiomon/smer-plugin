@@ -200,6 +200,9 @@ class PanelRenderer {
 
   async renderPanel(e, data) {
     const renderData = this.buildRenderData(data)
+    renderData.imgType = 'jpeg'
+    renderData.quality = 100
+    renderData.pageGotoParams = { waitUntil: 'networkidle0' }
     const puppeteer = (await import('../../../lib/puppeteer/puppeteer.js')).default
 
     try {

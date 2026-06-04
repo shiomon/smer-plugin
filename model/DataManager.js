@@ -223,29 +223,33 @@ class DataManager {
 
   async updateOwnerInfo(e, data) {
     try {
-      let ownerId = e.group?.info?.owner_id
+      const bot = e.bot ?? Bot
+      const group = bot.pickGroup?.(e.group_id) || e.group
+
+      let ownerId = group?.info?.owner_id
       if (!ownerId) {
-        const groupInfo = await e.group?.renew()
-        ownerId = groupInfo?.owner_id
+        try {
+          const groupInfo = await group?.renew?.()
+          ownerId = groupInfo?.owner_id
+        } catch {}
+      }
+      if (!ownerId) {
+        try {
+          const groupInfo = await group?.getInfo?.()
+          ownerId = groupInfo?.owner_id
+        } catch {}
       }
       if (ownerId && ownerId !== data.sys.ownerId) {
         data.sys.ownerId = String(ownerId)
-        const ownerMember = e.group?.pickMember(ownerId)
-        let card = ownerMember?.info?.card
-        let nickname = ownerMember?.info?.nickname
-        if (!nickname) {
+        const ownerMember = group?.pickMember?.(Number(ownerId))
+        let info = ownerMember?.info
+        if (!info?.nickname) {
           try {
-            const info = await ownerMember?.getInfo()
-            nickname = info?.nickname
-            card = info?.card || card
+            info = await ownerMember?.getInfo?.()
           } catch {}
         }
-        if (!nickname) {
-          try {
-            const simpleInfo = await ownerMember?.getSimpleInfo()
-            nickname = simpleInfo?.nickname || nickname
-          } catch {}
-        }
+        let card = info?.card
+        let nickname = info?.nickname
         data.sys.ownerName = card || nickname || String(ownerId)
       }
       if (ownerId) {

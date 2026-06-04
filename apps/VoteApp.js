@@ -1,5 +1,4 @@
 import plugin from '../../../lib/plugins/plugin.js'
-import { segment } from 'icqq'
 import { CONFIG } from '../config/cfg.js'
 
 const VOTE_EXPIRE_MS = (CONFIG.VOTE_EXPIRE || 3) * 60 * 1000
@@ -25,33 +24,33 @@ class VoteApp extends plugin {
 
   async startVote(e) {
     const at = e.message?.find(m => m.type === 'at')
-    if (!at) {
+    const targetId = String(e.at || at?.qq || at?.id || '')
+    if (!targetId || targetId === '0') {
       await e.reply('请@目标群友，格式：#猫娘变@群友 或 &变@群友')
       return true
     }
 
-    const targetId = String(at.qq)
-    const targetMember = e.group?.pickMember(targetId)
+    const bot = e.bot ?? Bot
+    const group = bot.pickGroup?.(e.group_id) || e.group
+    const targetMember = group?.pickMember?.(Number(targetId))
     if (!targetMember) {
       await e.reply('未找到该群友')
       return true
     }
 
-    let targetName = at.text || at.name || ''
+    let targetName = at?.text || at?.name || ''
     if (!targetName) {
-      try {
-        const info = await targetMember.getInfo()
-        targetName = info?.card || info?.nickname || ''
-      } catch {}
+      let info = targetMember?.info
+      if (!info?.nickname) {
+        try { info = await targetMember?.getInfo?.() } catch {}
+      }
+      targetName = info?.card || info?.nickname || ''
     }
     if (!targetName) {
       try {
-        const simpleInfo = await targetMember.getSimpleInfo()
+        const simpleInfo = await targetMember?.getSimpleInfo?.()
         targetName = simpleInfo?.nickname || ''
       } catch {}
-    }
-    if (!targetName && targetMember?.info) {
-      targetName = targetMember.info.card || targetMember.info.nickname || ''
     }
     if (!targetName) {
       targetName = String(targetId)
@@ -90,7 +89,7 @@ class VoteApp extends plugin {
       if (!v) return
       activeVotes.delete(groupId)
       try {
-        await e.reply(['❌', segment.at(Number(v.targetId)), ' 变为猫娘的投票已超时，未达到 ' + VOTE_REQUIRED + ' 票，投票失败。'])
+        await e.reply(['❌', segment.at(Number(v.targetId)), ' 变为猫娘的投票已超时，未达到 ' + VOTE_REQUIRED + ' 票，投票失败。']).catch(() => {})
       } catch {}
     }, VOTE_EXPIRE_MS)
 
