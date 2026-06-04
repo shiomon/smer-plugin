@@ -1,4 +1,4 @@
-# smer-plugin v3.2.0
+# smer-plugin v3.3.0
 
 猫娘调教插件 —— 基于 Yunzai 框架的猫娘养成调教系统
 
