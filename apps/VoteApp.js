@@ -100,10 +100,10 @@ class VoteApp extends plugin {
     await e.reply([
       '【猫娘更替投票】\n',
       '提议将 ', segment.at(Number(targetId)), ' 变为猫娘进行调教！\n',
-      '⚠️ 当前猫娘调教数据会重置',
-      `⏰ 限时 ${minutes} 分钟，超时未达 ${VOTE_REQUIRED} 票失败\n\n`,
-      `❌ 否决：管理或当事人发送 #猫娘不同意 或 &不同意 \n`,
-      `✅ 同意：发送 #猫娘同意 或 &同意（还需 ${need} 人）\n`     
+      '⚠️当前猫娘调教数据会重置\n',
+      `⏰限时： ${minutes} 分钟，超时未达 ${VOTE_REQUIRED} 票失败\n\n`,
+      `❌否决：管理或当事人发送 #猫娘不同意 或 &不同意 \n`,
+      `✅同意：发送 #猫娘同意 或 &同意（还需 ${need} 人）\n`     
     ])
     return true
   }
