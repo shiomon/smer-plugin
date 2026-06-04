@@ -4,7 +4,8 @@
 
 默认猫娘为群主，也可以投票指定
 
-<img width="673" height="1211" alt="11" src="https://github.com/user-attachments/assets/16fe1c00-d3eb-4930-9fee-b09f06b93dd5" />
+<img width="585" height="1215" alt="QQ20260605-023929" src="https://github.com/user-attachments/assets/335ad076-b359-4e92-848d-c93caac73a69" />
+
 
 ## 安装
 
@@ -136,12 +137,9 @@ git clone --depth=1 https://ghfast.top/https://github.com/shiomon/smer-plugin.gi
 
 ## 致谢
 
-本项目参考了 [yenai-plugin] 部分代码。
+本项目由华为云码道（CodeArts）智能体生成
 
-由华为智能体生成
-
-感谢以下项目：
-
+及以下项目：
 - [Miao-Yunzai]
 - [TRSS-Yunzai]
-- [yenai-plugin]
+- [yenai-plugin] 参考了部分代码
