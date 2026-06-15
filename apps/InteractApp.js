@@ -98,7 +98,18 @@ class InteractApp extends plugin {
     this.sys.dm.addLog(data, result.logText, result.logColor)
     this.sys.dm.saveData(data, groupId)
 
-    const outMsg = this.sys.ie.formatInteractionReply(result)
+    let outMsg = this.sys.ie.formatInteractionReply(result)
+    if (config.type === 'train') {
+      const lockedStats = []
+      if (statsBefore.satiety <= 0) lockedStats.push('饱食归零')
+      if (statsBefore.energy <= 0) lockedStats.push('体力归零')
+      if (statsBefore.pain <= 0) lockedStats.push('疼痛归零')
+      if (statsBefore.sensitivity <= 0) lockedStats.push('敏感归零')
+      if (statsBefore.hygiene <= 0) lockedStats.push('清洁归零')
+      if (lockedStats.length > 0) {
+        outMsg += `\n⚠️ ${lockedStats.join('、')}，无法提升调教属性！请先使用宠爱指令恢复状态。`
+      }
+    }
     await e.reply(outMsg)
   }
 }
