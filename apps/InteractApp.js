@@ -55,7 +55,7 @@ class InteractApp extends plugin {
     const config = CONFIG.INTERACTION_EFFECTS[action]
 
     const harmfulActions = ['鞭打', '打脸', '打屁股', '挠痒', '羞辱', '振动', '禁闭', '滴蜡']
-    if (data.stats.pain <= 0 && harmfulActions.includes(action)) {
+    if (harmfulActions.includes(action) && data.stats.satiety <= 0 && data.stats.energy <= 0) {
       await e.reply(`你对着${ownerName}的尸体发起了攻击...但毫无反应。请先使用 #猫娘投喂 或 &投喂 抢救！`)
       return
     }
