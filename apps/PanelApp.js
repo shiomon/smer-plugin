@@ -1,4 +1,5 @@
 import plugin from '../../../lib/plugins/plugin.js'
+import { CMD_PREFIX } from '../config/cfg.js'
 
 class PanelApp extends plugin {
   constructor() {
@@ -8,7 +9,7 @@ class PanelApp extends plugin {
       event: 'message',
       priority: 5000,
       rule: [
-        { reg: '^([#＃]猫娘|&)面板.*', fnc: 'showPanel' }
+        { reg: `^${CMD_PREFIX}面板.*`, fnc: 'showPanel' }
       ]
     })
     this.sys = global.smerSys

@@ -1,5 +1,5 @@
 import plugin from '../../../lib/plugins/plugin.js'
-import { CONFIG } from '../config/cfg.js'
+import { CONFIG, CMD_PREFIX } from '../config/cfg.js'
 
 const VOTE_EXPIRE_MS = (CONFIG.VOTE_EXPIRE || 3) * 60 * 1000
 const VOTE_REQUIRED = CONFIG.VOTE_REQUIRED || 3
@@ -14,9 +14,9 @@ class VoteApp extends plugin {
       event: 'message.group',
       priority: 5000,
       rule: [
-        { reg: '^([#＃]猫娘|&)变', fnc: 'startVote' },
-        { reg: '^([#＃]猫娘|&)同意', fnc: 'agreeVote' },
-        { reg: '^([#＃]猫娘|&)不同意', fnc: 'vetoVote' }
+        { reg: `^${CMD_PREFIX}变`, fnc: 'startVote' },
+        { reg: `^${CMD_PREFIX}同意`, fnc: 'agreeVote' },
+        { reg: `^${CMD_PREFIX}不同意`, fnc: 'vetoVote' }
       ]
     })
     this.sys = global.smerSys

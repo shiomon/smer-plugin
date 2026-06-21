@@ -1,5 +1,5 @@
 import plugin from '../../../lib/plugins/plugin.js'
-import { CONFIG, getUserColor } from '../config/cfg.js'
+import { CONFIG, getUserColor, CMD_PREFIX } from '../config/cfg.js'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -11,6 +11,8 @@ const shopHtmlPath = path.resolve(__dirname, '../resources/shop.html')
 const tempDir = path.resolve(__dirname, '../data')
 const tempShopPath = path.join(tempDir, '_shop_temp.html')
 
+const BUY_ITEM_REG = new RegExp(`^${CMD_PREFIX}购买`)
+
 class ShopApp extends plugin {
   constructor() {
     super({
@@ -19,8 +21,8 @@ class ShopApp extends plugin {
       event: 'message',
       priority: 5000,
       rule: [
-        { reg: '^([#＃]猫娘|&)商店.*', fnc: 'showShop' },
-        { reg: '^([#＃]猫娘|&)购买.*', fnc: 'buyItem' }
+        { reg: `^${CMD_PREFIX}商店.*`, fnc: 'showShop' },
+        { reg: `^${CMD_PREFIX}购买.*`, fnc: 'buyItem' }
       ]
     })
     this.sys = global.smerSys
@@ -53,7 +55,7 @@ class ShopApp extends plugin {
   }
 
   async buyItem(e) {
-    const itemText = e.msg.replace(/^([#＃]猫娘|&)购买/, '').trim()
+    const itemText = e.msg.replace(BUY_ITEM_REG, '').trim()
     const groupId = String(e.group_id)
     const data = this.sys.dm.readData(groupId)
 

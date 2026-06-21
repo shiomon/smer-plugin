@@ -1,8 +1,8 @@
 import plugin from '../../../lib/plugins/plugin.js'
-import { CONFIG } from '../config/cfg.js'
+import { CONFIG, CMD_PREFIX } from '../config/cfg.js'
 
 const ACTIONS = '摸摸|投喂|鞭打|打脸|打屁股|挠痒|抱抱|羞辱|安慰|洗澡|陪玩|振动|猫叫|禁闭|滴蜡'
-const ACTION_REG = new RegExp(`^([#＃]猫娘|&)(${ACTIONS}).*`)
+const ACTION_REG = new RegExp(`^${CMD_PREFIX}(${ACTIONS}).*`)
 const ACTION_EXTRACT = new RegExp(`(${ACTIONS})`)
 
 class InteractApp extends plugin {

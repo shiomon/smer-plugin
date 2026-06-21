@@ -617,11 +617,19 @@ export {
   LOCATIONS,
   EQUIPMENT_RARITY,
   generateRandomEffect,
+const CMD_PREFIX = '([#＃]猫娘|&)'
+
+export {
+  CONFIG,
+  LOCATIONS,
+  EQUIPMENT_RARITY,
+  HOUSES,
   CLOTHING_SLOTS,
   CLOTHING_DB,
   CLOTHING_PRESETS,
   SHOP_ITEMS,
   RANDOM_EVENTS,
   STAT_NAME_MAP,
-  getUserColor
+  getUserColor,
+  CMD_PREFIX
 }

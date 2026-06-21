@@ -3,6 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import Version from '../components/Version.js'
+import { CMD_PREFIX } from '../config/cfg.js'
 import { injectAssets } from '../model/html-inject.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -18,7 +19,7 @@ class HelpApp extends plugin {
       event: 'message',
       priority: 5000,
       rule: [
-        { reg: '^([#＃]猫娘|&)帮助.*', fnc: 'showHelp' }
+        { reg: `^${CMD_PREFIX}帮助.*`, fnc: 'showHelp' }
       ]
     })
     this.sys = global.smerSys

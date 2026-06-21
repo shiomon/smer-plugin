@@ -1,4 +1,5 @@
 import plugin from '../../../lib/plugins/plugin.js'
+import { CMD_PREFIX } from '../config/cfg.js'
 
 const pendingReset = new Map()
 
@@ -10,8 +11,8 @@ class ResetApp extends plugin {
       event: 'message',
       priority: 5000,
       rule: [
-        { reg: '^([#＃]猫娘|&)重置确认$', fnc: 'confirmReset' },
-        { reg: '^([#＃]猫娘|&)重置.*', fnc: 'resetWorld' }
+        { reg: `^${CMD_PREFIX}重置确认$`, fnc: 'confirmReset' },
+        { reg: `^${CMD_PREFIX}重置.*`, fnc: 'resetWorld' }
       ]
     })
     this.sys = global.smerSys

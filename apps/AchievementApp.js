@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import Version from '../components/Version.js'
-import { CONFIG } from '../config/cfg.js'
+import { CONFIG, CMD_PREFIX } from '../config/cfg.js'
 import { injectAssets } from '../model/html-inject.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -19,7 +19,7 @@ class AchievementApp extends plugin {
       event: 'message',
       priority: 5000,
       rule: [
-        { reg: '^([#＃]猫娘|&)成就.*', fnc: 'showAchievements' }
+        { reg: `^${CMD_PREFIX}成就.*`, fnc: 'showAchievements' }
       ]
     })
     this.sys = global.smerSys
