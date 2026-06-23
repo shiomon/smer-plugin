@@ -619,7 +619,6 @@ export {
   CONFIG,
   LOCATIONS,
   EQUIPMENT_RARITY,
-
   CLOTHING_SLOTS,
   CLOTHING_DB,
   CLOTHING_PRESETS,
@@ -627,5 +626,6 @@ export {
   RANDOM_EVENTS,
   STAT_NAME_MAP,
   getUserColor,
+  generateRandomEffect,
   CMD_PREFIX
 }
