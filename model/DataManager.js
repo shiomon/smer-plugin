@@ -2,13 +2,13 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { CONFIG, CLOTHING_DB, CLOTHING_PRESETS, CLOTHING_SLOTS, LOCATIONS, EQUIPMENT_RARITY } from '../config/cfg.js'
-import { calculateDays } from './utils.js'
+import { calculateDays, beijingNow } from './utils.js'
 import { injectAssets } from './html-inject.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const pluginRoot = path.resolve(__dirname, '..')
 const dataDir = path.join(pluginRoot, 'data')
-const htmlPath = path.join(dataDir, 'owner_smer_temp.html')
+const htmlPath = path.join(pluginRoot, 'html', 'owner_smer_temp.html')
 const htmlSrc = path.join(pluginRoot, 'resources', 'panel.html')
 
 function makeEmptySlot() {
@@ -24,6 +24,10 @@ class DataManager {
     try {
       if (!fs.existsSync(dataDir)) {
         fs.mkdirSync(dataDir, { recursive: true })
+      }
+      const htmlDir = path.join(pluginRoot, 'html')
+      if (!fs.existsSync(htmlDir)) {
+        fs.mkdirSync(htmlDir, { recursive: true })
       }
       const oldPath = path.join(dataDir, 'owner_smer_data.json')
       if (fs.existsSync(oldPath) && !fs.existsSync(this.getDataPath('default'))) {
@@ -283,11 +287,9 @@ class DataManager {
   }
 
   clampAllStats(stats) {
-    const clampedStats = {}
     for (const key in stats) {
-      clampedStats[key] = this.clampStat(key, stats[key])
+      stats[key] = this.clampStat(key, stats[key])
     }
-    return clampedStats
   }
 
   formatTime(mins) {
@@ -297,7 +299,7 @@ class DataManager {
   }
 
   addLog(data, text, color = '#ccc') {
-    const now = new Date()
+    const now = beijingNow()
     const h = now.getHours().toString().padStart(2, '0')
     const m = now.getMinutes().toString().padStart(2, '0')
     const day = calculateDays(data.sys.startTimestamp)

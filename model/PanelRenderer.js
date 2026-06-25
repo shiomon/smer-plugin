@@ -17,11 +17,7 @@ class PanelRenderer {
     for (const [stat, value] of Object.entries(effect)) {
       const name = fullMap[stat] || stat
       const sign = value > 0 ? '+' : ''
-      if (['lewd', 'depravity', 'obedience', 'sensitivity'].includes(stat)) {
-        parts.push(`${name}${sign}${value}%`)
-      } else {
-        parts.push(`${name}${sign}${value}%`)
-      }
+      parts.push(`${name}${sign}${value}%`)
     }
     return parts.join(', ')
   }

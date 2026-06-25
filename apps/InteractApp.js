@@ -1,5 +1,5 @@
 import plugin from '../../../lib/plugins/plugin.js'
-import { CONFIG, CMD_PREFIX } from '../config/cfg.js'
+import { CONFIG, CMD_PREFIX, GROUP_ONLY_MSG } from '../config/cfg.js'
 
 const ACTIONS = '摸摸|投喂|鞭打|打脸|打屁股|挠痒|抱抱|羞辱|安慰|洗澡|陪玩|振动|猫叫|禁闭|滴蜡'
 const ACTION_REG = new RegExp(`^${CMD_PREFIX}(${ACTIONS}).*`)
@@ -20,6 +20,7 @@ class InteractApp extends plugin {
   }
 
   async interact(e) {
+    if (!e.group_id) return e.reply(GROUP_ONLY_MSG)
     const match = e.msg.match(ACTION_EXTRACT)
     if (!match) return false
 
@@ -30,9 +31,8 @@ class InteractApp extends plugin {
     const userName = e.sender.card || e.sender.nickname
 
     const now = Date.now()
-    const cooldownMs = CONFIG.INTERACT_COOLDOWN * 1000
-    if (data.sys.lastInteractTime && now - data.sys.lastInteractTime < cooldownMs) {
-      const remain = Math.ceil((cooldownMs - (now - data.sys.lastInteractTime)) / 1000)
+    if (data.sys.lastInteractTime && now - data.sys.lastInteractTime < CONFIG.INTERACT_COOLDOWN) {
+      const remain = Math.ceil((CONFIG.INTERACT_COOLDOWN - (now - data.sys.lastInteractTime)) / 1000)
       await e.reply(`猫娘还在回味中...请${remain}秒后再来`)
       return
     }

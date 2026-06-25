@@ -1,6 +1,6 @@
 const CONFIG = {
   MAX_LOGS: 10, // 事件日志最大条数
-  INTERACT_COOLDOWN: 30, // 互动指令全局冷却(秒)
+  INTERACT_COOLDOWN: 30 * 1000, // 互动指令全局冷却(毫秒)
   VOTE_EXPIRE: 3, // 投票超时时间(分钟)
   VOTE_REQUIRED: 3, // 投票通过所需同意人数
   STAT_LIMITS: { // 各状态上限
@@ -543,6 +543,8 @@ const SHOP_ITEMS = { // 商店商品: cost=价格 type=类型 items=装备引用
   }
 }
 
+const SLOT_NAMES = { head: '头饰', upper: '上装', lower: '下装', bra: '胸罩', panty: '内裤', accessory: '饰品', shoes: '鞋子' }
+
 const RANDOM_EVENTS = { // 随机事件: text=文本 effect=效果 weight=权重(越大越容易触发)
   night: [
     { text: '猫娘半夜做噩梦惊醒了。', effect: { pain: -10 }, weight: 30 },
@@ -613,7 +615,9 @@ function getUserColor(userId) {
 }
 
 
-const CMD_PREFIX = '([#＃]猫娘|&)'
+const CMD_PREFIX = '([#＃]猫娘|&|＆)'
+
+const GROUP_ONLY_MSG = '此指令仅限群聊使用哦~'
 
 export {
   CONFIG,
@@ -624,8 +628,10 @@ export {
   CLOTHING_PRESETS,
   SHOP_ITEMS,
   RANDOM_EVENTS,
+  SLOT_NAMES,
   STAT_NAME_MAP,
   getUserColor,
   generateRandomEffect,
-  CMD_PREFIX
+  CMD_PREFIX,
+  GROUP_ONLY_MSG
 }

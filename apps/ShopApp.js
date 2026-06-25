@@ -1,5 +1,5 @@
 import plugin from '../../../lib/plugins/plugin.js'
-import { CONFIG, getUserColor, CMD_PREFIX } from '../config/cfg.js'
+import { CONFIG, getUserColor, CMD_PREFIX, GROUP_ONLY_MSG } from '../config/cfg.js'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -8,7 +8,7 @@ import { injectAssets } from '../model/html-inject.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const shopHtmlPath = path.resolve(__dirname, '../resources/shop.html')
-const tempDir = path.resolve(__dirname, '../data')
+const tempDir = path.resolve(__dirname, '../html')
 const tempShopPath = path.join(tempDir, '_shop_temp.html')
 
 const BUY_ITEM_REG = new RegExp(`^${CMD_PREFIX}购买`)
@@ -55,6 +55,7 @@ class ShopApp extends plugin {
   }
 
   async buyItem(e) {
+    if (!e.group_id) return e.reply(GROUP_ONLY_MSG)
     const itemText = e.msg.replace(BUY_ITEM_REG, '').trim()
     const groupId = String(e.group_id)
     const data = this.sys.dm.readData(groupId)

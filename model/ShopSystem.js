@@ -1,9 +1,6 @@
-import { CONFIG, CLOTHING_DB, SHOP_ITEMS, EQUIPMENT_RARITY, CLOTHING_SLOTS, generateRandomEffect } from '../config/cfg.js'
+import { CONFIG, CLOTHING_DB, SHOP_ITEMS, EQUIPMENT_RARITY, CLOTHING_SLOTS, SLOT_NAMES, generateRandomEffect } from '../config/cfg.js'
 import { calculateDays } from './utils.js'
 
-const SLOT_NAMES = {
-  head: '头饰', upper: '上装', lower: '下装', bra: '胸罩', panty: '内裤', accessory: '饰品', shoes: '鞋子'
-}
 
 class ShopSystem {
   constructor(dataManager) {
@@ -80,13 +77,7 @@ class ShopSystem {
       }
     } catch (error) {
       console.error('[Smer] 购买商品失败:', error)
-      const hasWorn = CLOTHING_SLOTS.some(slot => {
-        const c = data.clothes[slot]
-        return c && c.rarity === 'common' && (c.dur === undefined || c.dur > 0)
-      })
-      if (hasWorn) {
-        return { success: false, message: '猫娘身上还有衣物未脱净，无法购买调教装！\n💡 需先通过调教互动打掉所有衣物耐久。' }
-      }
+
       return { success: false, message: `购买失败: ${error.message}` }
     }
   }
@@ -97,11 +88,7 @@ class ShopSystem {
       return c && c.rarity === 'common' && (c.dur === undefined || c.dur > 0)
     })
     if (wornSlots.length > 0) {
-      const slotNames = {
-        head: '头饰', upper: '上装', lower: '下装',
-        bra: '胸罩', panty: '内裤', accessory: '饰品', shoes: '鞋子'
-      }
-      const wornNames = wornSlots.map(s => slotNames[s]).join('、')
+      const wornNames = wornSlots.map(s => SLOT_NAMES[s]).join('、')
       return {
         success: false,
         message: `猫娘身上还有${wornNames}未脱净，无法购买调教装！\n💡 提示：当所有衣物耐久归零后，商店将开放调教装购买权限。`

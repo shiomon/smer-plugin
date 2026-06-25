@@ -1,5 +1,5 @@
 import plugin from '../../../lib/plugins/plugin.js'
-import { CONFIG, CMD_PREFIX } from '../config/cfg.js'
+import { CONFIG, CMD_PREFIX, GROUP_ONLY_MSG } from '../config/cfg.js'
 
 const VOTE_EXPIRE_MS = (CONFIG.VOTE_EXPIRE || 3) * 60 * 1000
 const VOTE_REQUIRED = CONFIG.VOTE_REQUIRED || 3
@@ -11,7 +11,7 @@ class VoteApp extends plugin {
     super({
       name: 'Smer-投票',
       dsc: '投票更换猫娘',
-      event: 'message.group',
+      event: 'message',
       priority: 5000,
       rule: [
         { reg: `^${CMD_PREFIX}变`, fnc: 'startVote' },
@@ -23,6 +23,7 @@ class VoteApp extends plugin {
   }
 
   async startVote(e) {
+    if (!e.group_id) return e.reply(GROUP_ONLY_MSG)
     const at = e.message?.find(m => m.type === 'at')
     const targetId = String(e.at || at?.qq || at?.id || '')
     if (!targetId || targetId === '0') {
@@ -88,9 +89,7 @@ class VoteApp extends plugin {
       const v = activeVotes.get(groupId)
       if (!v) return
       activeVotes.delete(groupId)
-      try {
-        await e.reply(['❌', segment.at(Number(v.targetId)), ' 变为猫娘的投票已超时，未达到 ' + VOTE_REQUIRED + ' 票，投票失败。']).catch(() => {})
-      } catch {}
+
     }, VOTE_EXPIRE_MS)
 
     activeVotes.set(groupId, voteData)
@@ -109,6 +108,7 @@ class VoteApp extends plugin {
   }
 
   async agreeVote(e) {
+    if (!e.group_id) return e.reply(GROUP_ONLY_MSG)
     const groupId = String(e.group_id)
     const vote = activeVotes.get(groupId)
 
@@ -154,6 +154,7 @@ class VoteApp extends plugin {
   }
 
   async vetoVote(e) {
+    if (!e.group_id) return e.reply(GROUP_ONLY_MSG)
     const groupId = String(e.group_id)
     const vote = activeVotes.get(groupId)
 

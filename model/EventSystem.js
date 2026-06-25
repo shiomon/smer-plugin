@@ -18,9 +18,7 @@ class EventSystem {
 
   tickTime(data, minutes) {
     this.applyTickDecay(data)
-    if (Math.random() < 0.15) {
-      this.triggerRandomEvent(data, 'day')
-    }
+
     this.updateTraits(data)
     this.checkDailyEvents(data)
   }
@@ -40,7 +38,7 @@ class EventSystem {
       data.sys.location = LOCATIONS[Math.floor(Math.random() * LOCATIONS.length)].name
       data.stats.energy = this.dm.clampStat('energy', data.stats.energy + CONFIG.DAILY_ENERGY_RECOVERY)
       data.stats.satiety = this.dm.clampStat('satiety', data.stats.satiety - CONFIG.DAILY_SATIETY_LOSS)
-      data.stats = this.dm.clampAllStats(data.stats)
+      this.dm.clampAllStats(data.stats)
       this.dm.addLog(data, `新的一天开始了。猫娘在 [${data.sys.location}] 醒来。`, '#aaa')
       if (Math.random() < CONFIG.NIGHT_EVENT_CHANCE) {
         this.triggerNightEvent(data)

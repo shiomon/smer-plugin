@@ -1,7 +1,9 @@
 import plugin from '../../../lib/plugins/plugin.js'
-import { CMD_PREFIX } from '../config/cfg.js'
+import { CMD_PREFIX, GROUP_ONLY_MSG } from '../config/cfg.js'
 
 const pendingReset = new Map()
+
+const RESET_TIMEOUT = 60 * 1000
 
 class ResetApp extends plugin {
   constructor() {
@@ -19,16 +21,22 @@ class ResetApp extends plugin {
   }
 
   async resetWorld(e) {
+    if (!e.group_id) return e.reply(GROUP_ONLY_MSG)
     if (e.isGroup && !e.isMaster && !e.member?.is_admin) {
       await e.reply('暂无权限，只有管理员才能重置')
       return
     }
     const groupId = String(e.group_id)
-    pendingReset.set(groupId, Date.now())
+    if (pendingReset.has(groupId)) {
+      clearTimeout(pendingReset.get(groupId).timer)
+    }
+    const timer = setTimeout(() => pendingReset.delete(groupId), RESET_TIMEOUT)
+    pendingReset.set(groupId, { time: Date.now(), timer })
     await e.reply('⚠️ 当前猫娘调教数据会重置\n确认请发送 #猫娘重置确认 或 &重置确认')
   }
 
   async confirmReset(e) {
+    if (!e.group_id) return e.reply(GROUP_ONLY_MSG)
     if (e.isGroup && !e.isMaster && !e.member?.is_admin) {
       await e.reply('暂无权限，只有管理员才能重置')
       return
@@ -38,6 +46,7 @@ class ResetApp extends plugin {
       await e.reply('请先发送 #猫娘重置 或 &重置')
       return
     }
+    clearTimeout(pendingReset.get(groupId).timer)
     pendingReset.delete(groupId)
 
     this.sys.dm.resetData(groupId)

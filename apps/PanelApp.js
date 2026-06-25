@@ -1,5 +1,5 @@
 import plugin from '../../../lib/plugins/plugin.js'
-import { CMD_PREFIX } from '../config/cfg.js'
+import { CMD_PREFIX, GROUP_ONLY_MSG } from '../config/cfg.js'
 
 class PanelApp extends plugin {
   constructor() {
@@ -16,6 +16,7 @@ class PanelApp extends plugin {
   }
 
   async showPanel(e) {
+    if (!e.group_id) return e.reply(GROUP_ONLY_MSG)
     const groupId = String(e.group_id)
     const data = this.sys.dm.readData(groupId)
     if (!data || !data.clothes) {

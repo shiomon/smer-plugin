@@ -8,7 +8,7 @@ import { injectAssets } from '../model/html-inject.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const helpHtmlPath = path.resolve(__dirname, '../resources/help.html')
-const tempDir = path.resolve(__dirname, '../data')
+const tempDir = path.resolve(__dirname, '../html')
 const tempHelpPath = path.join(tempDir, '_help_temp.html')
 
 class HelpApp extends plugin {

@@ -38,15 +38,14 @@ class InteractionEngine {
     const isCritSuccess = config.critThreshold > 0 && roll >= config.critThreshold
 
     const baseBonus = this.dm.getTrainBonusSync(data)
-    const sensitivityMultiplier = 1 + (data.stats.sensitivity / 200)
-    const bonus = baseBonus * sensitivityMultiplier
     const locationModifier = this.es.getLocationModifier(data, action)
 
-    this.applyAction(data, action, config, isCritSuccess, bonus, locationModifier)
+    this.applyAction(data, action, config, isCritSuccess, baseBonus, locationModifier)
 
     const meta = ACTION_META[action]
     const logColor = isCritSuccess ? meta.critColor : meta.normalColor
-    let logText = this.getLogText(userName, isCritSuccess, false, '猫娘', action, userId)
+
+    let logText = this.getLogText(userName, isCritSuccess, false, this.dm.replaceOwnerName('猫娘', data), action, userId)
     let replyText = this.getLogText(userName, isCritSuccess, false, ownerName, action, userId)
 
     if (DUR_LOSS_ACTIONS.has(action)) {
@@ -63,7 +62,7 @@ class InteractionEngine {
   }
 
   applyTrainStat(data, stat, value, bonus) {
-    if (data.stats.satiety <= 0 || data.stats.energy <= 0 || data.stats.pain <= 0 || data.stats.sensitivity <= 0 || data.stats.hygiene <= 0) {
+    if (data.stats.satiety <= 0 || data.stats.energy <= 0 || data.stats.sensitivity <= 0 || data.stats.hygiene <= 0) {
       return
     }
     if (TRAIN_STATS.has(stat)) {

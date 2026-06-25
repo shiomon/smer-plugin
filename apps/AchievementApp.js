@@ -3,12 +3,12 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import Version from '../components/Version.js'
-import { CONFIG, CMD_PREFIX } from '../config/cfg.js'
+import { CONFIG, CMD_PREFIX, GROUP_ONLY_MSG } from '../config/cfg.js'
 import { injectAssets } from '../model/html-inject.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const achievementHtmlPath = path.resolve(__dirname, '../resources/achievement.html')
-const tempDir = path.resolve(__dirname, '../data')
+const tempDir = path.resolve(__dirname, '../html')
 const tempAchievementPath = path.join(tempDir, '_achievement_temp.html')
 
 class AchievementApp extends plugin {
@@ -26,6 +26,7 @@ class AchievementApp extends plugin {
   }
 
   async showAchievements(e) {
+    if (!e.group_id) return e.reply(GROUP_ONLY_MSG)
     try {
       const groupId = String(e.group_id)
       const data = this.sys.dm.readData(groupId)
